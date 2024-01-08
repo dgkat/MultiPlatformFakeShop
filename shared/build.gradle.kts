@@ -6,10 +6,10 @@ plugins {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
+   /* @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
        browser()
-    }
+    }*/
     
     androidTarget {
         compilations.all {
@@ -19,7 +19,7 @@ kotlin {
         }
     }
     
-    listOf(
+    /*listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
@@ -28,7 +28,7 @@ kotlin {
             baseName = "Shared"
             isStatic = true
         }
-    }
+    }*/
     
     sourceSets {
         commonMain.dependencies {
