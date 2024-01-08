@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    kotlin("plugin.serialization") version libs.versions.kotlin
 }
 
 kotlin {
@@ -19,7 +20,7 @@ kotlin {
         }
     }
     
-    /*listOf(
+    listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
@@ -28,11 +29,24 @@ kotlin {
             baseName = "Shared"
             isStatic = true
         }
-    }*/
+    }
     
     sourceSets {
         commonMain.dependencies {
-            // put your Multiplatform dependencies here
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
+            //Ktor
+            implementation("io.ktor:ktor-client-core:2.3.6")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
+
+            //Koin
+            implementation("io.insert-koin:koin-core:3.5.3")
+        }
+        androidMain.dependencies {
+            implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.1")
+            implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
         }
     }
 }
