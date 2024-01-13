@@ -34,8 +34,19 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
 
+            implementation("androidx.navigation:navigation-compose:2.7.6")
+            implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+
+            /*implementation(Dependencies.composeFoundation)
+            implementation(Dependencies.composeMaterial)
+            implementation(Dependencies.composeIconsExtended)
+            implementation(Dependencies.coilCompose)*/
             // Koin for Android
-            implementation("io.insert-koin:koin-android:3.5.3")
+            val koin_version = "3.5.3"
+            implementation("io.insert-koin:koin-android:$koin_version")
+            implementation("io.insert-koin:koin-androidx-compose:$koin_version")
+            implementation( "io.insert-koin:koin-android-compat:$koin_version")
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)

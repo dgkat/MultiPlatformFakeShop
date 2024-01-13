@@ -20,7 +20,7 @@ kotlin {
         }
     }
     
-    listOf(
+    /*listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
@@ -29,7 +29,7 @@ kotlin {
             baseName = "Shared"
             isStatic = true
         }
-    }
+    }*/
     
     sourceSets {
         commonMain.dependencies {
@@ -47,6 +47,7 @@ kotlin {
         androidMain.dependencies {
             implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.1")
             implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+            implementation("io.ktor:ktor-client-android:2.3.6")
         }
     }
 }
