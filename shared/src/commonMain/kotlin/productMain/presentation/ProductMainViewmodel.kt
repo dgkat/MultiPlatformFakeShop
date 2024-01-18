@@ -5,6 +5,7 @@ import core.base.coroutineScope
 import core.domain.models.Product
 import core.domain.models.Rating
 import core.domain.repository.ProductRepository
+import core.util.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -98,8 +99,17 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
             delay(1000)
             val result = repo.getProductById()
             _state.update {
+                val title = when(result){
+                    is Resource.Success -> {
+                        result.data?.title ?: ""
+                    }
+
+                    is Resource.Error -> {
+                        "error"
+                    }
+                }
                 ProductMainState(data = Product(
-                    title = result.title,
+                    title = title ,
                     description = "",
                     category = "",
                     id = 1,
