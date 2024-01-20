@@ -2,9 +2,14 @@ package core.di
 
 import core.data.remote.ProductRepositoryImpl
 import core.domain.repository.ProductRepository
+import core.util.CustomHttpLogger
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,12 +45,11 @@ fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetwo
         install(ContentNegotiation) {
             json(json)
         }
-        //TODO ADD LOGGING
 
-        /*if (enableNetworkLogs) {
+        if (enableNetworkLogs) {
             install(Logging) {
-                logger = Logger.DEFAULT
+                logger = CustomHttpLogger()
                 level = LogLevel.INFO
             }
-        }*/
+        }
     }

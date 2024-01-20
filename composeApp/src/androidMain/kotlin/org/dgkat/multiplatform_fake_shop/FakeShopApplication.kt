@@ -9,7 +9,7 @@ class FakeShopApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val appModules = listOf(androidModule())
-        initKoin {
+        initKoin(enableNetworkLogs = true) {
             androidContext(this@FakeShopApplication)
             modules(appModules)
         }

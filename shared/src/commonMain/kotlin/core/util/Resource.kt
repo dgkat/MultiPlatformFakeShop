@@ -3,16 +3,11 @@ package core.util
 sealed class Resource<T>(val data: T? = null, val message: String? = null) {
     class Success<T>(data: T?) : Resource<T>(data)
     sealed class Error<T>(data: T? = null, message: String? = null) : Resource<T>(data, message) {
-        class GenericError<T>(data: T?, message: String) : Error<T>(
-            data = data,
-            message = message
-        )
+        class GenericError<T>(data: T? = null, message: String? = null) : Error<T>()
 
         sealed class ApiError<T>(message: String? = null, data: T? = null) :
             Resource<T>(data, message) {
-            class HttpError<T>(val code: Int, val errorBody: T?, message: String) : Error<T>(
-                message = message
-            )
+            class HttpError<T>(val code: Int, val errorBody: T?) : Error<T>()
 
             class NetworkError<T> : Error<T>()
 

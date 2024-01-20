@@ -1,4 +1,6 @@
 package core.util
 
-class CustomLoggers {
+import io.ktor.client.plugins.logging.Logger
+
+expect class CustomHttpLogger : Logger {
 }

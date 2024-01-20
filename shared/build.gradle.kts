@@ -40,6 +40,7 @@ kotlin {
             implementation("io.ktor:ktor-client-core:2.3.6")
             implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
             implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
+            implementation("io.ktor:ktor-client-logging:2.3.6")
 
             //Koin
             implementation("io.insert-koin:koin-core:3.5.3")
