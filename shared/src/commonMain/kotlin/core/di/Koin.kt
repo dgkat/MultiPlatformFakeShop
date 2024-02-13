@@ -1,5 +1,6 @@
 package core.di
 
+import android.util.Log
 import core.data.remote.ProductRepositoryImpl
 import core.domain.repository.ProductRepository
 import core.util.CustomHttpLogger
@@ -49,7 +50,7 @@ fun createHttpClient(httpClientEngine: HttpClientEngine, json: Json, enableNetwo
         if (enableNetworkLogs) {
             install(Logging) {
                 logger = CustomHttpLogger()
-                level = LogLevel.INFO
+                level = LogLevel.ALL
             }
         }
     }
