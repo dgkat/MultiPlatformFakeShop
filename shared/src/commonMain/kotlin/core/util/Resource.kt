@@ -62,11 +62,10 @@ sealed class Resource<T>(val data: T? = null, val message: String? = null) {
     ) : Resource<T>(data, message)
 }
 
-sealed class FakeShopError {
-    data object ServiceUnavailable : FakeShopError()
-    data class HttpError(val code: Int, val errorBody: String?) : FakeShopError()
-    data object ClientError : FakeShopError()
-    data object ServerError : FakeShopError()
+sealed class FakeShopError() {
+    data class HttpError(val code: Int) : FakeShopError()
+    data class ClientError(val code: Int) : FakeShopError()
+    data class ServerError(val code: Int) : FakeShopError()
     data object NetworkError : FakeShopError()
     data object SerializationError : FakeShopError()
     data object UnknownError : FakeShopError()

@@ -1,12 +1,9 @@
 package core.util
 
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.SerializationException
@@ -54,16 +51,14 @@ suspend inline fun <reified T> safeRequest(
         Resource.Error(
             errorType =
             FakeShopError.HttpError(
-                code = e.response.status.value,
-                errorBody = e.response.status.description
+                code = e.response.status.value
             )
         )
     } catch (e: ServerResponseException) {
         Resource.Error(
             errorType =
-            FakeShopError.HttpError(
-                code = e.response.status.value,
-                errorBody = e.response.status.description
+            FakeShopError.ServerError(
+                code = e.response.status.value
             )
         )
     } catch (e: IOException) {
@@ -76,7 +71,9 @@ suspend inline fun <reified T> safeRequest(
         )
     } catch (e: ResponseException) {
         Resource.Error(
-            errorType = FakeShopError.ClientError
+            errorType = FakeShopError.ClientError(
+                code = e.response.status.value
+            )
         )
     } catch (e: Exception) {
         Resource.Error()
