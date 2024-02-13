@@ -1,15 +1,14 @@
 package core.di
 
-import android.util.Log
-import core.data.remote.ProductRepositoryImpl
+import core.data.remote.ProductClient
+import core.data.remote.ProductClientImpl
+import core.data.repository.ProductRepositoryImpl
 import core.domain.repository.ProductRepository
 import core.util.CustomHttpLogger
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
@@ -34,8 +33,8 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
 
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 
-    single<ProductRepository> { ProductRepositoryImpl() }
-
+    single<ProductClient> { ProductClientImpl(get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
