@@ -12,8 +12,13 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,7 +40,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import org.dgkat.multiplatform_fake_shop.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FakeShopRoot(
     appState: FakeShopAppState = rememberFakeShopAppState(
@@ -78,16 +85,17 @@ fun FakeShopRoot(
         )
     }*/
 
-    val unreadDestinations by appState.topLevelDestinationsWithUnreadResources.collectAsStateWithLifecycle()
+   // val unreadDestinations by appState.topLevelDestinationsWithUnreadResources.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier,
         //   snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             // if (appState.shouldShowBottomBar) {
-            NiaBottomBar(
+            FakeShopAppBottomBar(
                 destinations = appState.topLevelDestinations,
-                destinationsWithUnreadResources = unreadDestinations,
+                destinationsWithUnreadResources = //unreadDestinations
+                emptySet() ,
                 onNavigateToDestination = appState::navigateToTopLevelDestination,
                 currentDestination = appState.currentDestination,
                 modifier = Modifier
@@ -99,41 +107,44 @@ fun FakeShopRoot(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
-                /*.windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(
-                        WindowInsetsSides.Horizontal,
-                    ),
-                ),*/
+            /*.windowInsetsPadding(
+                WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Horizontal,
+                ),
+            ),*/
         ) {
             Column(Modifier.fillMaxSize()) {
                 // Show the top app bar on top level destinations.
                 val destination = appState.currentTopLevelDestination
                 if (destination != null) {
-                    NiaTopAppBar(
+                    TopAppBar(
                         titleRes = destination.titleTextId,
-                        navigationIcon = NiaIcons.Search,
+                        navigationIcon = Icons.Filled.Search,
                         navigationIconContentDescription = stringResource(
-                            id = settingsR.string.feature_settings_top_app_bar_navigation_icon_description,
+                            id = R.string.top_nav_bar_icon_desc,
                         ),
-                        actionIcon = NiaIcons.Settings,
+                        actionIcon = Icons.Filled.AddCircle,
                         actionIconContentDescription = stringResource(
-                            id = settingsR.string.feature_settings_top_app_bar_action_icon_description,
+                            id = R.string.top_nav_bar_icon_desc,
                         ),
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                             containerColor = Color.Transparent,
                         ),
                         onActionClick = { showSettingsDialog = true },
-                        onNavigationClick = { appState.navigateToSearch() },
+                        onNavigationClick = { /*appState.navigateToSearch()*/ },
                     )
                 }
 
-                NiaNavHost(appState = appState, onShowSnackbar = { message, action ->
-                    snackbarHostState.showSnackbar(
-                        message = message,
-                        actionLabel = action,
-                        duration = Short,
-                    ) == ActionPerformed
-                })
+                FakeShopNavHost(
+                    appState = appState,
+                    /*   onShowSnackbar = { message, action ->
+                       snackbarHostState.showSnackbar(
+                           message = message,
+                           actionLabel = action,
+                           duration = Short,
+                       ) == ActionPerformed
+                   }*/
+                )
             }
 
             // TODO: We may want to add padding or spacer when the snackbar is shown so that
@@ -141,10 +152,9 @@ fun FakeShopRoot(
         }
     }
 }
-}
 
 @Composable
-private fun NiaBottomBar(
+private fun FakeShopAppBottomBar(
     destinations: List<TopLevelDestination>,
     destinationsWithUnreadResources: Set<TopLevelDestination>,
     onNavigateToDestination: (TopLevelDestination) -> Unit,
@@ -202,9 +212,4 @@ private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLev
     } ?: false
 
 
-/*val navController = rememberNavController()
-NavHost(navController = navController, startDestination = HOME_SCREEN_ROUTE) {
-    homeScreen()
-    secondScreen()
-    profileScreen()
-}*/
+
