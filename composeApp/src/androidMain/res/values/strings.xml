@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MultiPlatformFakeShop</string>
+    <string name="home_name">Home</string>
+    <string name="second_screen_name">Second screen</string>
+    <string name="profile_name">Profile</string>
 </resources>
