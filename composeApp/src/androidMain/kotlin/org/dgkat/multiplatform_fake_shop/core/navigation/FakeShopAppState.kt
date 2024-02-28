@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
@@ -108,12 +109,15 @@ class FakeShopAppState(
                 launchSingleTop = true
                 // Restore state when reselecting a previously selected item
                 restoreState = true
+                anim {
+                    enter = android.R.animator.fade_in
+                }
             }
 
             when (topLevelDestination) {
                 TopLevelDestination.HOME_SCREEN -> navController.navigateToHome(topLevelNavOptions)
-                TopLevelDestination.SECOND_SCREEN -> navController.navigateToProfile(topLevelNavOptions)
-                TopLevelDestination.PROFILE_SCREEN -> navController.navigateToSecondScreen(topLevelNavOptions)
+                TopLevelDestination.SECOND_SCREEN -> navController.navigateToSecondScreen(topLevelNavOptions)
+                TopLevelDestination.PROFILE_SCREEN -> navController.navigateToProfile(topLevelNavOptions)
             }
 
     }

@@ -18,6 +18,7 @@ fun FakeShopNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        //WIP add animation here?
         homeScreen()
         secondScreen()
         profileScreen()

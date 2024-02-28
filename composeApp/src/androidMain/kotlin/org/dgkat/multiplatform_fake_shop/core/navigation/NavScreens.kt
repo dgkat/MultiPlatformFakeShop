@@ -1,16 +1,22 @@
 package org.dgkat.multiplatform_fake_shop.core.navigation
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import org.dgkat.multiplatform_fake_shop.productMain.ProductMainScreen
 import org.dgkat.multiplatform_fake_shop.productMain.ProfileScreen
 import org.dgkat.multiplatform_fake_shop.productMain.SecondScreen
 import org.koin.androidx.compose.koinViewModel
 import productMain.presentation.ProductMainViewModel
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 const val PROFILE_SCREEN_ROUTE = "profile_screen_route"
@@ -54,5 +60,36 @@ fun NavGraphBuilder.profileScreen() {
         route = PROFILE_SCREEN_ROUTE,
     ) {
         ProfileScreen()
+    }
+}
+
+//Screen with arg
+private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
+
+@VisibleForTesting
+internal const val TOPIC_ID_ARG = "topicId"
+
+internal class TopicArgs(val topicId: String) {
+    constructor(savedStateHandle: SavedStateHandle) :
+            this(URLDecoder.decode(checkNotNull(savedStateHandle[TOPIC_ID_ARG]), URL_CHARACTER_ENCODING))
+}
+fun NavController.navigateToTopic(topicId: String) {
+    val encodedId = URLEncoder.encode(topicId, URL_CHARACTER_ENCODING)
+    navigate("topic_route/$encodedId") {
+        launchSingleTop = true
+    }
+}
+
+fun NavGraphBuilder.topicScreen(
+    onBackClick: () -> Unit,
+    onTopicClick: (String) -> Unit,
+) {
+    composable(
+        route = "topic_route/{$TOPIC_ID_ARG}",
+        arguments = listOf(
+            navArgument(TOPIC_ID_ARG) { type = NavType.StringType },
+        ),
+    ) {
+       // TopicRoute(onBackClick = onBackClick, onTopicClick = onTopicClick)
     }
 }
