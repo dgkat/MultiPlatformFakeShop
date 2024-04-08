@@ -3,7 +3,7 @@ package productMain.presentation
 import core.base.KMPViewModel
 import core.base.coroutineScope
 import core.domain.models.Product
-import core.domain.models.Rating
+import core.domain.models.ProductProductRating
 import core.domain.repository.ProductRepository
 import core.util.Resource
 import kotlinx.coroutines.delay
@@ -19,7 +19,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
     private val repo: ProductRepository by inject()
     private val coroutineScope = viewModelScope.coroutineScope
 
-    private val _state: MutableStateFlow<ProductMainState> = MutableStateFlow(
+   /* private val _state: MutableStateFlow<ProductMainState> = MutableStateFlow(
         ProductMainState(
             data = Product(
                 title = "title val ",
@@ -28,7 +28,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
                 id = 1,
                 image = "",
                 price = 0.0,
-                rating = Rating(
+                rating = ProductRating(
                     count = 1,
                     rate = 0.0
                 )
@@ -47,7 +47,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
                 id = 1,
                 image = "",
                 price = 0.0,
-                rating = Rating(
+                rating = ProductRating(
                     count = 1,
                     rate = 0.0
                 )
@@ -72,7 +72,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
                         id = 1,
                         image = "",
                         price = 0.0,
-                        rating = Rating(
+                        rating = ProductRating(
                             count = 1,
                             rate = 0.0
                         )
@@ -89,7 +89,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
                         id = 1,
                         image = "",
                         price = 0.0,
-                        rating = Rating(
+                        rating = ProductRating(
                             count = 1,
                             rate = 0.0
                         )
@@ -115,7 +115,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
                     id = 1,
                     image = "",
                     price = 0.0,
-                    rating = Rating(
+                    rating = ProductRating(
                         count = 1,
                         rate = 0.0
                     )
@@ -123,7 +123,7 @@ class  ProductMainViewModel : KMPViewModel(), KoinComponent {
             }
         }
     }
-
+*/
     fun onEvent(event: ProductMainEvent) {
         when (event) {
             is ProductMainEvent.onAskForData -> {}

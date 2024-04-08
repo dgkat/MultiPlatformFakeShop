@@ -1,4 +1,4 @@
-package org.dgkat.multiplatform_fake_shop.productMain
+package org.dgkat.multiplatform_fake_shop.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +13,7 @@ import productMain.presentation.ProductMainEvent
 import productMain.presentation.ProductMainState
 
 @Composable
-fun ProductMainScreen(
+fun HomeScreen(
     state: ProductMainState,
     onEvent: (ProductMainEvent) -> Unit
 ) {

@@ -1,16 +1,26 @@
 package core.data.repository
 
+import core.data.mappers.RemoteToDomainProductMapper
 import core.data.remote.ProductClient
 import core.domain.models.Product
 import core.domain.repository.ProductRepository
 import core.util.Resource
+import core.util.safeRequest
 import org.koin.core.component.KoinComponent
 
-class ProductRepositoryImpl(private val productClient: ProductClient) : KoinComponent,
+class ProductRepositoryImpl(
+    private val productClient: ProductClient,
+    private val productMapper: RemoteToDomainProductMapper
+) : KoinComponent,
     ProductRepository {
 
     override suspend fun getProductById(): Resource<Product> {
+        val response = productClient.getProductById()
+        return safeRequest { productMapper.map(response) }
+    }
 
-        return productClient.getProductById()
+    override suspend fun getProductByType(type: String): Resource<List<Product>> {
+        val response = productClient.getProductByType(type)
+        return safeRequest { productMapper.map(response) }
     }
 }

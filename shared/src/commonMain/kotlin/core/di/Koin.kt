@@ -2,6 +2,9 @@ package core.di
 
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
+import core.data.mappers.RemoteToDomainProductMapper
+import core.data.mappers.RemoteToDomainProductRatingMapper
+import core.data.mappers.RemoteToDomainProductTypeMapper
 import core.data.repository.ProductRepositoryImpl
 import core.domain.repository.ProductRepository
 import core.util.CustomHttpLogger
@@ -35,6 +38,10 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
 
     single<ProductClient> { ProductClientImpl(get()) }
     single<ProductRepository> { ProductRepositoryImpl(get()) }
+
+    factory { RemoteToDomainProductTypeMapper() }
+    factory { RemoteToDomainProductRatingMapper() }
+    factory { RemoteToDomainProductMapper(get(), get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

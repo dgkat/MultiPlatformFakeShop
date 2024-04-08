@@ -12,7 +12,7 @@ public actual abstract class KMPViewModel: ViewModel() {
      */
     @Suppress("LeakingThis")
     public actual val viewModelScope: ViewModelScope = ViewModelScopeImpl(this)
-
+    val a = viewModelScope.coroutineScope
     /**
      * Called when this ViewModel is no longer used and will be destroyed.
      */

@@ -42,6 +42,18 @@ suspend inline fun <reified E> ResponseException.errorBody(): E? =
     } catch (e: SerializationException) {
         null
     }*/
+
+suspend fun <T> safeRequest(
+    operation: () -> T
+): Resource<T> {
+    return try {
+        Resource.Success(operation())
+    } catch (e: Exception) {
+        Resource.Error()
+    }
+}
+
+/*
 suspend inline fun <reified T> safeRequest(
     crossinline response: suspend () -> HttpResponse
 ): Resource<T> =
@@ -77,4 +89,4 @@ suspend inline fun <reified T> safeRequest(
         )
     } catch (e: Exception) {
         Resource.Error()
-    }
+    }*/

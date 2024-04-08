@@ -10,7 +10,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import org.dgkat.multiplatform_fake_shop.productMain.ProductMainScreen
+import org.dgkat.multiplatform_fake_shop.home.HomeScreen
 import org.dgkat.multiplatform_fake_shop.productMain.ProfileScreen
 import org.dgkat.multiplatform_fake_shop.productMain.SecondScreen
 import org.koin.androidx.compose.koinViewModel
@@ -35,7 +35,7 @@ fun NavGraphBuilder.homeScreen() {
     ) {
         val productMainViewModel = koinViewModel<ProductMainViewModel>()
         val state by productMainViewModel.state.collectAsStateWithLifecycle()
-        ProductMainScreen(state = state, onEvent = productMainViewModel::onEvent)
+        HomeScreen(state = state, onEvent = productMainViewModel::onEvent)
     }
 }
 

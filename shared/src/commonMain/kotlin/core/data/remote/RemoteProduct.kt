@@ -1,29 +1,21 @@
-package core.domain.models
+package core.data.remote
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Product (
+data class RemoteProduct(
     val category: String,
     val description: String,
     val id: Int,
     val image: String,
     val price: Double,
-    val rating: ProductRating,
+    val rating: RemoteProductRating,
     val title: String,
-    val productType : ProductType
+    val productType: String
 )
 
 @Serializable
-data class ProductRating(
+data class RemoteProductRating(
     val count: Int,
     val rate: Double
 )
-
-@Serializable
-enum class ProductType {
-    PHONES,
-    TABLETS,
-    LAPTOPS,
-    MISC
-}
