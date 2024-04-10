@@ -37,7 +37,7 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 
     single<ProductClient> { ProductClientImpl(get()) }
-    single<ProductRepository> { ProductRepositoryImpl(get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get(),get()) }
 
     factory { RemoteToDomainProductTypeMapper() }
     factory { RemoteToDomainProductRatingMapper() }

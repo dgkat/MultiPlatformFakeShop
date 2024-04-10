@@ -1,8 +1,6 @@
-package core.base
+package core.presentation
 
-import androidx.lifecycle.ViewModel
-
-public actual abstract class KMPViewModel: ViewModel() {
+public expect abstract class KMPViewModel() {
 
     /**
      * The [ViewModelScope] containing the [CoroutineScope] of this ViewModel.
@@ -10,11 +8,10 @@ public actual abstract class KMPViewModel: ViewModel() {
      * On Android this is bound to `Dispatchers.Main.immediate`,
      * where on Apple platforms it is bound to `Dispatchers.Main`.
      */
-    @Suppress("LeakingThis")
-    public actual val viewModelScope: ViewModelScope = ViewModelScopeImpl(this)
-    val a = viewModelScope.coroutineScope
+    public val viewModelScope: core.presentation.ViewModelScope
+
     /**
      * Called when this ViewModel is no longer used and will be destroyed.
      */
-    public actual override fun onCleared() { }
+    public open fun onCleared()
 }

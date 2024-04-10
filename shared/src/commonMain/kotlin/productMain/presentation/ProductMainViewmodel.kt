@@ -1,17 +1,8 @@
 package productMain.presentation
 
-import core.base.KMPViewModel
-import core.base.coroutineScope
-import core.domain.models.Product
-import core.domain.models.ProductProductRating
+import core.presentation.KMPViewModel
+import core.presentation.coroutineScope
 import core.domain.repository.ProductRepository
-import core.util.Resource
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

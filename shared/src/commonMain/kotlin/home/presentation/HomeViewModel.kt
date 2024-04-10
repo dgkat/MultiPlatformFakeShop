@@ -1,7 +1,7 @@
 package home.presentation
 
-import core.base.KMPViewModel
-import core.base.coroutineScope
+import core.presentation.KMPViewModel
+import core.presentation.coroutineScope
 import core.domain.repository.ProductRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
