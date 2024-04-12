@@ -20,7 +20,9 @@ class ProductRepositoryImpl(
     }
 
     override suspend fun getProductByType(type: String): Resource<List<Product>> {
-        val response = productClient.getProductByType(type)
-        return safeRequest { productMapper.map(response) }
+        return safeRequest {
+            val response = productClient.getProductByType(type)
+            productMapper.map(response)
+        }
     }
 }

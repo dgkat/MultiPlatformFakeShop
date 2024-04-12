@@ -9,13 +9,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import home.presentation.HomeEvent
+import home.presentation.HomeState
 import productMain.presentation.ProductMainEvent
 import productMain.presentation.ProductMainState
 
 @Composable
 fun HomeScreen(
-    state: ProductMainState,
-    onEvent: (ProductMainEvent) -> Unit
+    state: HomeState,
+    onEvent: (HomeEvent) -> Unit
 ) {
     Scaffold { paddingValues ->
         LazyColumn(
@@ -25,7 +27,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                TitleText(title = state.data?.title ?: "empty")
+                TitleText(title = state.data ?: "empty")
             }
         }
     }

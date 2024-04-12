@@ -3,19 +3,46 @@ package home.presentation
 import core.presentation.KMPViewModel
 import core.presentation.coroutineScope
 import core.domain.repository.ProductRepository
+import core.util.Resource
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 class HomeViewModel(
-    val productRepository: ProductRepository
+    private val productRepository: ProductRepository
 ) : KMPViewModel(), KoinComponent {
     private val scope: CoroutineScope = viewModelScope.coroutineScope
+    private val _state: MutableStateFlow<HomeState> = MutableStateFlow(
+        HomeState()
+    )
+    val state = _state.stateIn(
+        scope = a,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = HomeState()
+    )
 
     init {
         scope.launch { }
-        a.launch {  }
+        a.launch {
+            val result = productRepository.getProductByType("test")
+            println("result $result")
+            when (result) {
+                is Resource.Error -> {
+                    _state.update {
+                        HomeState(result.errorType?.toString() ?: "oops")
+                    }
+                }
+
+                is Resource.Success -> HomeState(result.data.firstOrNull()?.title ?: "no title")
+            }
+
+        }
     }
+
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.OnProductClicked -> {}
