@@ -37,7 +37,11 @@ class HomeViewModel(
                     }
                 }
 
-                is Resource.Success -> HomeState(result.data.firstOrNull()?.title ?: "no title")
+                is Resource.Success -> {
+                    _state.update {
+                        HomeState(result.data.firstOrNull()?.title ?: "no title")
+                    }
+                }
             }
 
         }

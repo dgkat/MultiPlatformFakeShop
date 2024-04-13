@@ -15,7 +15,7 @@ class RemoteToDomainProductMapper(
             image = remoteProduct.image,
             price = remoteProduct.price,
             rating = ratingMapper.map(remoteProduct.rating),
-            title = remoteProduct.title,
+            title = remoteProduct.name,
             productType = typeMapper.map(remoteProduct.productType)
         )
     }
