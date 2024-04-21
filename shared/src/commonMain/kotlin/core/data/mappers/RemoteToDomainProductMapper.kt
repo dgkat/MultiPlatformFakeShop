@@ -4,7 +4,7 @@ import core.data.remote.RemoteProduct
 import core.domain.models.Product
 
 class RemoteToDomainProductMapper(
-    private val typeMapper: RemoteToDomainProductTypeMapper,
+    //private val typeMapper: RemoteToDomainProductTypeMapper,
     private val ratingMapper: RemoteToDomainProductRatingMapper
 ) {
     fun map(remoteProduct: RemoteProduct): Product {
@@ -16,7 +16,7 @@ class RemoteToDomainProductMapper(
             price = remoteProduct.price,
             rating = ratingMapper.map(remoteProduct.rating),
             title = remoteProduct.name,
-            productType = typeMapper.map(remoteProduct.productType)
+            productType = remoteProduct.productType
         )
     }
 

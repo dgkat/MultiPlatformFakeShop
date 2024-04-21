@@ -11,7 +11,7 @@ data class Product (
     val price: Double,
     val rating: ProductRating,
     val title: String,
-    val productType : ProductType
+    val productType : String
 )
 
 @Serializable
@@ -19,11 +19,3 @@ data class ProductRating(
     val count: Int,
     val rate: Double
 )
-
-@Serializable
-enum class ProductType {
-    PHONES,
-    TABLETS,
-    LAPTOPS,
-    MISC
-}

@@ -4,10 +4,12 @@ import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
 import core.data.mappers.RemoteToDomainProductMapper
 import core.data.mappers.RemoteToDomainProductRatingMapper
-import core.data.mappers.RemoteToDomainProductTypeMapper
 import core.data.repository.ProductRepositoryImpl
 import core.domain.repository.ProductRepository
 import core.util.CustomHttpLogger
+import home.domain.GetHomeProductsByTypeUseCase
+import home.domain.GetHomeProductsByTypeUseCaseTest
+import home.domain.GetHomeProductsByTypesUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -37,11 +39,16 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 
     single<ProductClient> { ProductClientImpl(get()) }
-    single<ProductRepository> { ProductRepositoryImpl(get(),get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get(), get()) }
 
-    factory { RemoteToDomainProductTypeMapper() }
     factory { RemoteToDomainProductRatingMapper() }
-    factory { RemoteToDomainProductMapper(get(), get()) }
+    factory { RemoteToDomainProductMapper(get()) }
+
+    factory { GetHomeProductsByTypeUseCase(get()) }
+    factory { GetHomeProductsByTypesUseCase(get()) }
+
+
+    factory { GetHomeProductsByTypeUseCaseTest(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

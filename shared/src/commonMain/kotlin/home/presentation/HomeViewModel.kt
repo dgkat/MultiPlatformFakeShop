@@ -4,7 +4,10 @@ import core.presentation.KMPViewModel
 import core.presentation.coroutineScope
 import core.domain.repository.ProductRepository
 import core.util.Resource
+import home.domain.GetHomeProductsByTypeUseCase
+import home.domain.GetHomeProductsByTypesUseCase
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -13,7 +16,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 class HomeViewModel(
-    private val productRepository: ProductRepository
+    private val getHomeProductsByTypes: GetHomeProductsByTypesUseCase
 ) : KMPViewModel(), KoinComponent {
     private val scope: CoroutineScope = viewModelScope.coroutineScope
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(
@@ -28,7 +31,20 @@ class HomeViewModel(
     init {
         scope.launch { }
         a.launch {
-            val result = productRepository.getProductByType("test")
+            val types = listOf("phone", "laptop", "asdf")
+            val result = getHomeProductsByTypes(types)
+            result.entries.forEach { flowEntry ->
+                this.launch {
+                    val a = flowEntry.key
+                    flowEntry.value.collect {
+                        when (it) {
+                            is Resource.Error -> println("testFlow $a -> ${it.errorType}")
+                            is Resource.Success -> println("testFlow $a -> ${it.data}")
+                        }
+                    }
+                }
+            }
+            /*val result = getHomeProductsByType("test")
             println("result $result")
             when (result) {
                 is Resource.Error -> {
@@ -42,7 +58,7 @@ class HomeViewModel(
                         HomeState(result.data.firstOrNull()?.title ?: "no title")
                     }
                 }
-            }
+            }*/
 
         }
     }

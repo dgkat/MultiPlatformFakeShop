@@ -1,7 +1,7 @@
 package core.data.mappers
 
-import core.domain.models.ProductType
 
+/*
 class RemoteToDomainProductTypeMapper {
     fun map(remoteProductType: String): ProductType {
         return when (remoteProductType) {
@@ -13,4 +13,4 @@ class RemoteToDomainProductTypeMapper {
             }
         }
     }
-}
+}*/
