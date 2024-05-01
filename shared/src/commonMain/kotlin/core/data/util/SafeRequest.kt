@@ -1,5 +1,7 @@
-package core.util
+package core.data.util
 
+import core.domain.util.RemoteError
+import core.domain.util.Resource
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.ServerResponseException

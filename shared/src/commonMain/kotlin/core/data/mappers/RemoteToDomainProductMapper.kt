@@ -2,6 +2,7 @@ package core.data.mappers
 
 import core.data.remote.RemoteProduct
 import core.domain.models.Product
+import home.presentation.mappers.DomainToUiProductRatingMapper
 
 class RemoteToDomainProductMapper(
     //private val typeMapper: RemoteToDomainProductTypeMapper,

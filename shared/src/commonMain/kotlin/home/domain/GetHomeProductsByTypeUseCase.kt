@@ -4,7 +4,7 @@ import core.data.mappers.RemoteToDomainProductMapper
 import core.data.remote.RemoteProduct
 import core.domain.models.Product
 import core.domain.repository.ProductRepository
-import core.util.Resource
+import core.domain.util.Resource
 import kotlinx.coroutines.delay
 
 class GetHomeProductsByTypeUseCase(
@@ -16,7 +16,7 @@ class GetHomeProductsByTypeUseCase(
     }
 }
 
-class GetHomeProductsByTypeUseCaseTest(
+class GetHomeProductsByTypeUseCaseMock(
     private val mapper: RemoteToDomainProductMapper
 ) {
     suspend operator fun invoke(type: String): Resource<List<Product>> {
@@ -37,9 +37,11 @@ class GetHomeProductsByTypeUseCaseTest(
             products.add(
                 mapper.map(
                     (RemoteProduct(
-                        id = count,
-                        name = type + count,
-                        price = count.toDouble()
+                        category = type,
+                        id = it,
+                        name = type + count + it,
+                        price = count.toDouble(),
+                        productType = type
                     ))
                 )
             )

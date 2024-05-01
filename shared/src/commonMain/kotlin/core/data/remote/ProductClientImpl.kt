@@ -1,6 +1,6 @@
 package core.data.remote
 
-import core.util.BASE_URL
+import core.data.util.BASE_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

@@ -1,4 +1,4 @@
-package core.util
+package core.data.util
 
 import android.util.Log
 import io.ktor.client.plugins.logging.Logger

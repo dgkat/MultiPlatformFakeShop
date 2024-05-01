@@ -2,21 +2,19 @@ package home.presentation
 
 import core.presentation.KMPViewModel
 import core.presentation.coroutineScope
-import core.domain.repository.ProductRepository
-import core.util.Resource
-import home.domain.GetHomeProductsByTypeUseCase
+import core.domain.util.Resource
 import home.domain.GetHomeProductsByTypesUseCase
+import home.presentation.mappers.DomainToUiProductMapper
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 class HomeViewModel(
-    private val getHomeProductsByTypes: GetHomeProductsByTypesUseCase
+    private val getHomeProductsByTypes: GetHomeProductsByTypesUseCase,
+    private val domainToUiProductMapper: DomainToUiProductMapper
 ) : KMPViewModel(), KoinComponent {
     private val scope: CoroutineScope = viewModelScope.coroutineScope
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(
@@ -31,7 +29,7 @@ class HomeViewModel(
     init {
         scope.launch { }
         a.launch {
-            val types = listOf("phone", "laptop", "asdf")
+            val types = listOf("phone", "laptop", "asdf","")
             val result = getHomeProductsByTypes(types)
             result.entries.forEach { flowEntry ->
                 this.launch {
@@ -39,7 +37,10 @@ class HomeViewModel(
                     flowEntry.value.collect {
                         when (it) {
                             is Resource.Error -> println("testFlow $a -> ${it.errorType}")
-                            is Resource.Success -> println("testFlow $a -> ${it.data}")
+                            is Resource.Success -> {
+                                val b = domainToUiProductMapper.map(it.data)
+                                println("testFlow $a -> $b")
+                            }
                         }
                     }
                 }

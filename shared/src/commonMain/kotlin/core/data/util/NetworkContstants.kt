@@ -1,4 +1,4 @@
-package core.util
+package core.data.util
 
 // device ->            http://  192.168.0.112:    8081/
 // ipconfig in command prompt -> ^"IPv4 Address" + ^": BE port"

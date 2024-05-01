@@ -1,7 +1,7 @@
 package core.domain.repository
 
 import core.domain.models.Product
-import core.util.Resource
+import core.domain.util.Resource
 
 interface ProductRepository {
 
