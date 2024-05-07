@@ -31,6 +31,9 @@ class HomeViewModel(
     private val getProductsByTypePaginated: GetProductsByTypePaginated
 ) : KMPViewModel(), KoinComponent {
     private val scope: CoroutineScope = viewModelScope.coroutineScope
+
+    private var typesMap: Map<String, StateFlowRowStateHandler>
+
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(
         HomeState()
     )
@@ -77,7 +80,7 @@ class HomeViewModel(
             }
 
         }*/
-        val typesMap = types.associateWith {
+        typesMap = types.associateWith {
 
             StateFlowRowStateHandler(get(), a)
         }
