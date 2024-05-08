@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     kotlin("plugin.serialization") version libs.versions.kotlin
+    alias(libs.plugins.realm)
 }
 
 kotlin {
@@ -34,7 +35,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
 
             //Ktor
             implementation("io.ktor:ktor-client-core:2.3.6")
@@ -44,6 +45,8 @@ kotlin {
 
             //Koin
             implementation("io.insert-koin:koin-core:3.5.3")
+
+            implementation(libs.realm)
         }
         androidMain.dependencies {
             implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.1")
