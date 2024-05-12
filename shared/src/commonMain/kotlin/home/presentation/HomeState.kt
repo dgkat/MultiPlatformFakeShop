@@ -1,6 +1,6 @@
 package home.presentation
 
 data class HomeState (
-    val data : String = "",
+    val data : Map<String,HomeRowState>  = emptyMap(),
     val loading : Boolean = true
 )
