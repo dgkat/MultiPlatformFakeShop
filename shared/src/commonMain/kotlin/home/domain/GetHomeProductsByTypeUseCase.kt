@@ -1,7 +1,7 @@
 package home.domain
 
-import core.data.mappers.RemoteToDomainProductMapper
-import core.data.remote.RemoteProduct
+import core.data.remote.mappers.RemoteToDomainProductMapper
+import core.data.remote.models.RemoteProduct
 import core.domain.models.Product
 import core.domain.repository.ProductRepository
 import core.domain.util.Resource

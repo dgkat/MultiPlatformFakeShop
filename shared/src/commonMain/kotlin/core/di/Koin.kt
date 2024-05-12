@@ -1,12 +1,14 @@
 package core.di
 
-import core.data.mappers.RemoteToDomainProductMapper
-import core.data.mappers.RemoteToDomainProductRatingMapper
+import core.data.local.mappers.LocalToDomainProductMapper
+import core.data.local.mappers.LocalToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
+import core.data.remote.mappers.RemoteToDomainProductMapper
+import core.data.remote.mappers.RemoteToDomainProductRatingMapper
 import core.data.repository.ProductRepositoryImpl
-import core.domain.repository.ProductRepository
 import core.data.util.CustomHttpLogger
+import core.domain.repository.ProductRepository
 import home.domain.GetHomeProductsByTypeUseCase
 import home.domain.GetHomeProductsByTypeUseCaseMock
 import home.domain.GetHomeProductsByTypesUseCase
@@ -29,7 +31,11 @@ import org.koin.dsl.module
 fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(commonModule(enableNetworkLogs = enableNetworkLogs), platformModule())
+        modules(
+            commonModule(enableNetworkLogs = enableNetworkLogs),
+            platformModule(),
+            databaseModule()
+        )
     }
 
 fun initKoin() = initKoin(enableNetworkLogs = false) {}
@@ -48,6 +54,8 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     factory { DomainToUiProductRatingMapper() }
     factory { DomainToUiProductMapper(get()) }
 
+    factory { LocalToDomainProductRatingMapper() }
+    factory { LocalToDomainProductMapper(get()) }
 
     factory { GetHomeProductsByTypeUseCase(get()) }
     factory { GetHomeProductsByTypesUseCase(get()) }

@@ -69,4 +69,8 @@ class HomeViewModel(
             is HomeEvent.OnProductClicked -> {}
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+    }
 }

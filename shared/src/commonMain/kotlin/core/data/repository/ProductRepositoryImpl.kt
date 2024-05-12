@@ -1,6 +1,6 @@
 package core.data.repository
 
-import core.data.mappers.RemoteToDomainProductMapper
+import core.data.remote.mappers.RemoteToDomainProductMapper
 import core.data.remote.ProductClient
 import core.domain.models.Product
 import core.domain.repository.ProductRepository

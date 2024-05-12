@@ -1,4 +1,4 @@
-package core.data.remote
+package core.data.remote.models
 
 import kotlinx.serialization.Serializable
 

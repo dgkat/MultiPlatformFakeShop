@@ -1,5 +1,6 @@
 package core.data.remote
 
+import core.data.remote.models.RemoteProduct
 import core.data.util.BASE_URL
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

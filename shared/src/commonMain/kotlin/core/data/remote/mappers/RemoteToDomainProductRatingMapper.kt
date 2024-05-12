@@ -1,6 +1,6 @@
-package core.data.mappers
+package core.data.remote.mappers
 
-import core.data.remote.RemoteProductRating
+import core.data.remote.models.RemoteProductRating
 import core.domain.models.ProductRating
 
 class RemoteToDomainProductRatingMapper {

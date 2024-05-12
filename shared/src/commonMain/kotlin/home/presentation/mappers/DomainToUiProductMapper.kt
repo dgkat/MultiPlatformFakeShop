@@ -1,6 +1,5 @@
 package home.presentation.mappers
 
-import core.data.remote.RemoteProduct
 import core.domain.models.Product
 import home.presentation.models.UiHomeProduct
 

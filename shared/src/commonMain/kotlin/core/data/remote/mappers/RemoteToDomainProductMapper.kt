@@ -1,11 +1,9 @@
-package core.data.mappers
+package core.data.remote.mappers
 
-import core.data.remote.RemoteProduct
+import core.data.remote.models.RemoteProduct
 import core.domain.models.Product
-import home.presentation.mappers.DomainToUiProductRatingMapper
 
 class RemoteToDomainProductMapper(
-    //private val typeMapper: RemoteToDomainProductTypeMapper,
     private val ratingMapper: RemoteToDomainProductRatingMapper
 ) {
     fun map(remoteProduct: RemoteProduct): Product {
