@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 fun androidModule() = module {
     viewModel { ProductMainViewModel() }
-    viewModel { HomeViewModel(get(),get(),get()) }
+    viewModel { HomeViewModel(get(),get()) }
 }

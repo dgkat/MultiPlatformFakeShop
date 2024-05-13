@@ -5,12 +5,11 @@ import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
 import core.data.repository.ProductRepositoryImpl
-import core.domain.repository.ProductRepository
 import core.data.util.CustomHttpLogger
+import core.domain.repository.ProductRepository
 import home.domain.GetHomeProductsByTypeUseCase
 import home.domain.GetHomeProductsByTypeUseCaseMock
 import home.domain.GetHomeProductsByTypesUseCase
-import home.presentation.GetProductsByTypePaginated
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.DomainToUiProductRatingMapper
 import io.ktor.client.HttpClient
@@ -52,9 +51,6 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
 
     factory { GetHomeProductsByTypeUseCase(get()) }
     factory { GetHomeProductsByTypesUseCase(get()) }
-
-    factory { GetProductsByTypePaginated(get()) }
-
 
     factory { GetHomeProductsByTypeUseCaseMock(get()) }
 }

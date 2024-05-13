@@ -36,6 +36,7 @@ fun NavGraphBuilder.homeScreen() {
     ) {
         val homeViewModel = koinViewModel<HomeViewModel>()
         val state by homeViewModel.state.collectAsStateWithLifecycle()
+        println("statecomp ${state}")
         HomeScreen(state = state, onEvent = homeViewModel::onEvent)
     }
 }
