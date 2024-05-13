@@ -16,8 +16,10 @@ compose-plugin = "1.6.0-alpha01"
 junit = "4.13.2"
 kotlin = "1.9.21"
 material3Android = "1.2.0"
+runtime-tracing = "1.6.7"
 
 [libraries]
+androidx-runtime-tracing = { module = "androidx.compose.runtime:runtime-tracing",version.ref = "runtime-tracing" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

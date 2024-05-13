@@ -49,49 +49,11 @@ fun FakeShopRoot(
 
     )
 ) {
-    /* fun NiaApp(
-         windowSizeClass: WindowSizeClass,
-         networkMonitor: NetworkMonitor,
-         userNewsResourceRepository: UserNewsResourceRepository,
-         appState: FakeShopAppState = rememberFakeShopAppState(
-             networkMonitor = networkMonitor,
-             windowSizeClass = windowSizeClass,
-             userNewsResourceRepository = userNewsResourceRepository,
-         ),
-     ) {*/
-
     var showSettingsDialog by rememberSaveable { mutableStateOf(false) }
-
-    //NiaBackground {
-
-    // val snackbarHostState = remember { SnackbarHostState() }
-
-    //val isOffline by appState.isOffline.collectAsStateWithLifecycle()
-
-    // If user is not connected to the internet show a snack bar to inform them.
-    /*val notConnectedMessage = stringResource(R.string.not_connected)
-    LaunchedEffect(isOffline) {
-        if (isOffline) {
-            snackbarHostState.showSnackbar(
-                message = notConnectedMessage,
-                duration = Indefinite,
-            )
-        }
-    }*/
-
-    /*if (showSettingsDialog) {
-        SettingsDialog(
-            onDismiss = { showSettingsDialog = false },
-        )
-    }*/
-
-   // val unreadDestinations by appState.topLevelDestinationsWithUnreadResources.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier,
-        //   snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            // if (appState.shouldShowBottomBar) {
             FakeShopAppBottomBar(
                 destinations = appState.topLevelDestinations,
                 destinationsWithUnreadResources = //unreadDestinations
@@ -100,18 +62,12 @@ fun FakeShopRoot(
                 currentDestination = appState.currentDestination,
                 modifier = Modifier
             )
-            //  }
         },
     ) { padding ->
         Row(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
-            /*.windowInsetsPadding(
-                WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Horizontal,
-                ),
-            ),*/
         ) {
             Column(Modifier.fillMaxSize()) {
                 // Show the top app bar on top level destinations.
@@ -136,19 +92,9 @@ fun FakeShopRoot(
                 }
 
                 FakeShopNavHost(
-                    appState = appState,
-                    /*   onShowSnackbar = { message, action ->
-                       snackbarHostState.showSnackbar(
-                           message = message,
-                           actionLabel = action,
-                           duration = Short,
-                       ) == ActionPerformed
-                   }*/
+                    appState = appState
                 )
             }
-
-            // TODO: We may want to add padding or spacer when the snackbar is shown so that
-            //  content doesn't display behind it.
         }
     }
 }

@@ -37,6 +37,7 @@ kotlin {
 
             implementation("androidx.navigation:navigation-compose:2.7.6")
             implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+            //implementation(libs.androidx.runtime.tracing)
 
             /*implementation(Dependencies.composeFoundation)
             implementation(Dependencies.composeMaterial)

@@ -1,19 +1,15 @@
 package home.presentation
 
-import core.domain.models.Product
 import core.domain.util.Resource
 import core.presentation.KMPViewModel
-import core.presentation.coroutineScope
 import home.domain.GetHomeProductsByTypeUseCaseMock
 import home.domain.GetHomeProductsByTypesUseCase
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.models.UiHomeProduct
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,9 +33,16 @@ class HomeViewModel(
     init {
         //check if internet connection to show error / call for types to show
 
-        val types = listOf("phone", "laptop", "asdf", "")
+        val types = listOf(
+            "phone",
+            "laptop",
+            "asdf",
+            "",
+            "this_is_a_long_text_to_represent_many_items_in_a_row"
+        )
 
         val handlers = mutableListOf<StateFlow<HomeRowState>>()
+        // create a class that handles this (factory maybe?)( we can then inject the handler there)
         types.forEach { type ->
             val handler = StateFlowRowStateHandler(
                 getHomeProductsByTypeUseCase = get(),
@@ -60,7 +63,17 @@ class HomeViewModel(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.OnProductClicked -> {}
+            is HomeEvent.OnProductClicked -> {
+
+            }
+
+            HomeEvent.OnColumnEndReached -> {
+                println("column bottom reached")
+            }
+
+            is HomeEvent.OnRowEndReached -> {
+                println("row end reached ${event.type}")
+            }
         }
     }
 }
@@ -89,8 +102,7 @@ class StateFlowRowStateHandler(
     suspend operator fun invoke(type: String) {
 
         _state.update { it.copy(type = type, loading = true) }
-        val a = getHomeProductsByTypeUseCase(type)
-        when (a) {
+        when (val products = getHomeProductsByTypeUseCase(type)) {
             is Resource.Error -> {
                 _state.update { it.copy(type = type, loading = false) }
             }
@@ -99,7 +111,7 @@ class StateFlowRowStateHandler(
                 _state.update {
                     it.copy(
                         type = type,
-                        products = domainToUiProductMapper.map(a.data),
+                        products = domainToUiProductMapper.map(products.data),
                         loading = false
                     )
                 }

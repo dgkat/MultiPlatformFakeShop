@@ -21,7 +21,8 @@ class GetHomeProductsByTypeUseCaseMock(
 ) {
     suspend operator fun invoke(type: String): Resource<List<Product>> {
         val products = fillData(type)
-        val delayTime = type.length * 1000L
+        val thousandMillis = 1000L
+        val delayTime = if (type.length > 10) thousandMillis else type.length * thousandMillis
         delay(delayTime)
         return if (products.isEmpty()) {
             Resource.Error()
@@ -38,7 +39,7 @@ class GetHomeProductsByTypeUseCaseMock(
                 mapper.map(
                     (RemoteProduct(
                         category = type,
-                        id = it,
+                        id = count + it,
                         name = type + count + it,
                         price = count.toDouble(),
                         productType = type
