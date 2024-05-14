@@ -52,7 +52,7 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     factory { GetHomeProductsByTypeUseCase(get()) }
     factory { GetHomeProductsByTypesUseCase(get()) }
 
-    factory { GetHomeProductsByTypeUseCaseMock(get()) }
+    single { GetHomeProductsByTypeUseCaseMock(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

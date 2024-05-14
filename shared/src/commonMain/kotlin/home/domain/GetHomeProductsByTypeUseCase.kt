@@ -4,6 +4,7 @@ import core.data.mappers.RemoteToDomainProductMapper
 import core.data.remote.RemoteProduct
 import core.domain.models.Product
 import core.domain.repository.ProductRepository
+import core.domain.util.RemoteError
 import core.domain.util.Resource
 import kotlinx.coroutines.delay
 
@@ -19,16 +20,39 @@ class GetHomeProductsByTypeUseCase(
 class GetHomeProductsByTypeUseCaseMock(
     private val mapper: RemoteToDomainProductMapper
 ) {
-    suspend operator fun invoke(type: String): Resource<List<Product>> {
-        val products = fillData(type)
+    val types = listOf(
+        "phone",
+        "laptop",
+        "asdf",
+        "",
+        "this_is_a_long_text_to_represent_many_items_in_a_row"
+    )
+
+    val map = mutableMapOf<String, List<Product>>()
+    init {
+        types.forEach {
+            map[it] = fillData(it)
+        }
+    }
+
+    suspend operator fun invoke(type: String, pageFrom: Int): Resource<List<Product>> {
         val thousandMillis = 1000L
         val delayTime = if (type.length > 10) thousandMillis else type.length * thousandMillis
         delay(delayTime)
+        val products = getData(type, pageFrom)
         return if (products.isEmpty()) {
             Resource.Error()
+        } else if (products.size < 5) {
+            Resource.Error(data = products, errorType = RemoteError.ServerError(405))
         } else {
             Resource.Success(products)
         }
+    }
+
+    private fun getData(type: String,pageFrom: Int): List<Product> {
+        val products = map[type] ?: emptyList()
+        val to = if (pageFrom + 5 > products.size) products.size else pageFrom + 5
+        return products.subList(pageFrom, to)
     }
 
     private fun fillData(type: String): List<Product> {

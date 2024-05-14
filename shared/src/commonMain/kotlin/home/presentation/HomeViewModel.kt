@@ -30,6 +30,9 @@ class HomeViewModel(
         initialValue = HomeState()
     )
 
+    private val handlers = mutableListOf<StateFlow<HomeRowState>>()
+    private val handlersActual = mutableMapOf<StateFlowRowStateHandler, StateFlow<HomeRowState>>()
+
     init {
         //check if internet connection to show error / call for types to show
 
@@ -41,7 +44,7 @@ class HomeViewModel(
             "this_is_a_long_text_to_represent_many_items_in_a_row"
         )
 
-        val handlers = mutableListOf<StateFlow<HomeRowState>>()
+
         // create a class that handles this (factory maybe?)( we can then inject the handler there)
         types.forEach { type ->
             val handler = StateFlowRowStateHandler(
@@ -49,15 +52,23 @@ class HomeViewModel(
                 domainToUiProductMapper = domainToUiProductMapper,
                 parentScope = a
             )
-            handlers.add(
+            handlersActual[handler] = handler.state
+
+            a.launch {
+                handler.invoke(type)
+            }
+            /*handlers.add(
                 handler.state
             )
             a.launch {
                 handler.invoke(type)
-            }
+            }*/
         }
-        _state.update {
+        /*_state.update {
             it.copy(data = handlers)
+        }*/
+        _state.update {
+            it.copy(data = handlersActual.values.toList())
         }
     }
 
@@ -73,10 +84,16 @@ class HomeViewModel(
 
             is HomeEvent.OnRowEndReached -> {
                 println("row end reached ${event.type}")
+                a.launch {
+                    handlersActual.keys.firstOrNull { it.state.value.type == event.type }
+                        ?.invoke(event.type)
+                }
             }
+
         }
     }
 }
+
 
 data class HomeRowState(
     val type: String = "",
@@ -102,16 +119,17 @@ class StateFlowRowStateHandler(
     suspend operator fun invoke(type: String) {
 
         _state.update { it.copy(type = type, loading = true) }
-        when (val products = getHomeProductsByTypeUseCase(type)) {
+        when (val products = getHomeProductsByTypeUseCase(type, state.value.products.size)) {
             is Resource.Error -> {
                 _state.update { it.copy(type = type, loading = false) }
             }
 
             is Resource.Success -> {
                 _state.update {
+                    val pastData = it.products
                     it.copy(
                         type = type,
-                        products = domainToUiProductMapper.map(products.data),
+                        products = pastData + domainToUiProductMapper.map(products.data),
                         loading = false
                     )
                 }

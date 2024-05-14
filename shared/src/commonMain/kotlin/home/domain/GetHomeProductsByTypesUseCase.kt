@@ -13,7 +13,7 @@ class GetHomeProductsByTypesUseCase(
             types.associateWith {
                 flow {
                     emit(
-                        getHomeProductsByTypeUseCase(it)
+                        getHomeProductsByTypeUseCase(it,5)
                     )
                 }
             }

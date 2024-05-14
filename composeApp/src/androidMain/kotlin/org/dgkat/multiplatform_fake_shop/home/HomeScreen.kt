@@ -86,7 +86,7 @@ fun HomeProductRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         state = lazyRowState
     ) {
-        items(items = rowState.products, key = { product -> product.productType }) { product ->
+        items(items = rowState.products/*, key = { product -> product.id }*/) { product ->
             HomeProductCard(product)
         }
     }
