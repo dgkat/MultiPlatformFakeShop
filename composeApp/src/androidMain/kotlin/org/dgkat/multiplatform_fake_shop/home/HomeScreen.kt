@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import home.presentation.HomeEvent
 import home.presentation.HomeRowState
 import home.presentation.HomeState
@@ -63,8 +61,7 @@ private fun HomeProductColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = lazyColumnState
     ) {
-        items(items = state.data) { homeRowStateFlow ->
-            val homeRowState by homeRowStateFlow.collectAsStateWithLifecycle()
+        items(items = state.homeRowStates) { homeRowState ->
             HomeProductRow(homeRowState, onEvent)
         }
     }

@@ -9,7 +9,6 @@ import home.presentation.models.UiHomeProduct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,13 +29,12 @@ class HomeViewModel(
         initialValue = HomeState()
     )
 
-    private val handlers = mutableListOf<StateFlow<HomeRowState>>()
-    private val handlersActual = mutableMapOf<StateFlowRowStateHandler, StateFlow<HomeRowState>>()
+    private val homeRowVMSlices = mutableListOf<HomeRowVMSlice>()
 
     init {
         //check if internet connection to show error / call for types to show
 
-        val types = listOf(
+        val categories = listOf(
             "phone",
             "laptop",
             "asdf",
@@ -46,29 +44,38 @@ class HomeViewModel(
 
 
         // create a class that handles this (factory maybe?)( we can then inject the handler there)
-        types.forEach { type ->
-            val handler = StateFlowRowStateHandler(
+        categories.forEachIndexed { index, type ->
+            val slice = HomeRowVMSlice(
                 getHomeProductsByTypeUseCase = get(),
                 domainToUiProductMapper = domainToUiProductMapper,
+                type = type,
                 parentScope = a
             )
-            handlersActual[handler] = handler.state
-
+            homeRowVMSlices.add(slice)
+            addRowState(HomeRowState(type = type), index)
             a.launch {
-                handler.invoke(type)
+                slice.invoke()
+                slice.state.collect { homeRowState ->
+                    updateRowState(homeRowState, index)
+                }
             }
-            /*handlers.add(
-                handler.state
-            )
-            a.launch {
-                handler.invoke(type)
-            }*/
         }
-        /*_state.update {
-            it.copy(data = handlers)
-        }*/
-        _state.update {
-            it.copy(data = handlersActual.values.toList())
+    }
+
+    private fun updateRowState(newRowState: HomeRowState, rowIndex: Int) {
+        _state.update { homeState ->
+            val updatedHomeRowStates = homeState.homeRowStates.toMutableList().apply {
+                this[rowIndex] = newRowState
+            }
+            homeState.copy(homeRowStates = updatedHomeRowStates)
+        }
+    }
+    private fun addRowState(newRowState: HomeRowState, rowIndex: Int) {
+        _state.update { homeState ->
+            val updatedHomeRowStates = homeState.homeRowStates.toMutableList().apply {
+                add(rowIndex, newRowState)
+            }
+            homeState.copy(homeRowStates = updatedHomeRowStates)
         }
     }
 
@@ -85,11 +92,9 @@ class HomeViewModel(
             is HomeEvent.OnRowEndReached -> {
                 println("row end reached ${event.type}")
                 a.launch {
-                    handlersActual.keys.firstOrNull { it.state.value.type == event.type }
-                        ?.invoke(event.type)
+                    homeRowVMSlices.find { it.state.value.type == event.type }?.invoke()
                 }
             }
-
         }
     }
 }
@@ -101,13 +106,17 @@ data class HomeRowState(
     val loading: Boolean = false
 )
 
-class StateFlowRowStateHandler(
+class HomeRowVMSlice(
     private val getHomeProductsByTypeUseCase: GetHomeProductsByTypeUseCaseMock,
     private val domainToUiProductMapper: DomainToUiProductMapper,
+    private val type: String,
     parentScope: CoroutineScope
 ) {
     private val _state: MutableStateFlow<HomeRowState> = MutableStateFlow(
-        HomeRowState()
+        HomeRowState(
+            type = type,
+            loading = true
+        )
     )
     val state = _state.stateIn(
         scope = parentScope,
@@ -116,19 +125,27 @@ class StateFlowRowStateHandler(
     )
 
 
-    suspend operator fun invoke(type: String) {
+    suspend operator fun invoke() {
 
-        _state.update { it.copy(type = type, loading = true) }
+        _state.update { it.copy(loading = true) }
         when (val products = getHomeProductsByTypeUseCase(type, state.value.products.size)) {
             is Resource.Error -> {
-                _state.update { it.copy(type = type, loading = false) }
+                _state.update {
+                    val pastData = it.products
+                    val newData = products.data?.let { newProducts ->
+                        pastData + domainToUiProductMapper.map(newProducts)
+                    } ?: pastData
+                    it.copy(
+                        products = newData,
+                        loading = false
+                    )
+                }
             }
 
             is Resource.Success -> {
                 _state.update {
                     val pastData = it.products
                     it.copy(
-                        type = type,
                         products = pastData + domainToUiProductMapper.map(products.data),
                         loading = false
                     )
