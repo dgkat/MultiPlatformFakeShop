@@ -43,7 +43,7 @@ class GetHomeProductsByTypeUseCaseMock(
         return if (products.isEmpty()) {
             Resource.Error()
         } else if (products.size < 5) {
-            Resource.Error(data = products, errorType = RemoteError.ServerError(405))
+            Resource.Success(data = products, code = 204)
         } else {
             Resource.Success(products)
         }

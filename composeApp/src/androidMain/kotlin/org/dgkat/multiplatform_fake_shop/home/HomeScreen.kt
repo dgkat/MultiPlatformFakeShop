@@ -61,7 +61,7 @@ private fun HomeProductColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = lazyColumnState
     ) {
-        items(items = state.homeRowStates) { homeRowState ->
+        items(items = state.homeRowStates,key = { it.type }) { homeRowState ->
             HomeProductRow(homeRowState, onEvent)
         }
     }
@@ -73,10 +73,12 @@ fun HomeProductRow(
     onEvent: (HomeEvent) -> Unit
 ) {
     val lazyRowState = rememberLazyListState()
-    val endReached by remember { derivedStateOf { lazyRowState.endReached() } }
+    if (!rowState.allDataLoaded) {
+        val endReached by remember { derivedStateOf { lazyRowState.endReached() } }
 
-    LaunchedEffect(endReached) {
-        if (endReached) onEvent(HomeEvent.OnRowEndReached(rowState.type))
+        LaunchedEffect(endReached) {
+            if (endReached) onEvent(HomeEvent.OnRowEndReached(rowState.type))
+        }
     }
     LazyRow(
         modifier = Modifier.fillMaxWidth(),

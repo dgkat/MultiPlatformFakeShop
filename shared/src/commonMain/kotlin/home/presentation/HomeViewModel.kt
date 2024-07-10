@@ -70,6 +70,7 @@ class HomeViewModel(
             homeState.copy(homeRowStates = updatedHomeRowStates)
         }
     }
+
     private fun addRowState(newRowState: HomeRowState, rowIndex: Int) {
         _state.update { homeState ->
             val updatedHomeRowStates = homeState.homeRowStates.toMutableList().apply {
@@ -103,7 +104,9 @@ class HomeViewModel(
 data class HomeRowState(
     val type: String = "",
     val products: List<UiHomeProduct> = emptyList(),
-    val loading: Boolean = false
+    val loading: Boolean = false,
+    val allDataLoaded: Boolean = false,
+    val error: String? = null
 )
 
 class HomeRowVMSlice(
@@ -131,13 +134,9 @@ class HomeRowVMSlice(
         when (val products = getHomeProductsByTypeUseCase(type, state.value.products.size)) {
             is Resource.Error -> {
                 _state.update {
-                    val pastData = it.products
-                    val newData = products.data?.let { newProducts ->
-                        pastData + domainToUiProductMapper.map(newProducts)
-                    } ?: pastData
                     it.copy(
-                        products = newData,
-                        loading = false
+                        loading = false,
+                        error = "error"
                     )
                 }
             }
@@ -147,7 +146,8 @@ class HomeRowVMSlice(
                     val pastData = it.products
                     it.copy(
                         products = pastData + domainToUiProductMapper.map(products.data),
-                        loading = false
+                        loading = false,
+                        allDataLoaded = (products.code == 204)
                     )
                 }
             }

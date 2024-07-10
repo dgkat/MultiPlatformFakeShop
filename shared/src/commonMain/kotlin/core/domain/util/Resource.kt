@@ -54,7 +54,7 @@ sealed class ErrorWrapper<T>(message: String? = null, data: T? = null) :
 
  */
 sealed class Resource<T>() {
-    data class Success<T>(val data: T) : Resource<T>()
+    data class Success<T>(val data: T,val code: Int? = null) : Resource<T>()
     data class Error<T>(
         val data: T? = null,
         val message: String? = null,
