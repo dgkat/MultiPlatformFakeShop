@@ -38,7 +38,6 @@ class HomeViewModel(
             "phone",
             "laptop",
             "asdf",
-            "",
             "this_is_a_long_text_to_represent_many_items_in_a_row"
         )
 

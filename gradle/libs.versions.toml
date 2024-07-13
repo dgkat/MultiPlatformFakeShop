@@ -10,6 +10,7 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.10.0"
 androidx-test-junit = "1.1.5"
+coilCompose = "2.6.0"
 compose = "1.5.4"
 compose-compiler = "1.5.6"
 compose-plugin = "1.6.0-alpha01"
@@ -19,7 +20,9 @@ material3Android = "1.2.0"
 runtime-tracing = "1.6.7"
 
 [libraries]
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-runtime-tracing = { module = "androidx.compose.runtime:runtime-tracing",version.ref = "runtime-tracing" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
