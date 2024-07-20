@@ -37,16 +37,19 @@ kotlin {
 
             implementation("androidx.navigation:navigation-compose:2.7.6")
             implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+            //implementation(libs.androidx.runtime.tracing)
 
-            /*implementation(Dependencies.composeFoundation)
-            implementation(Dependencies.composeMaterial)
-            implementation(Dependencies.composeIconsExtended)
-            implementation(Dependencies.coilCompose)*/
+            implementation(libs.compose.foundation)
+            //implementation(libs.compose.material)
+            implementation(libs.androidx.material.icons.extended)
+            //compose-coil = { module = "io.coil-kt:coil-compose:2.6.0", version.ref = "compose" }
+            implementation(libs.coil.compose)
             // Koin for Android
             val koin_version = "3.5.3"
             implementation("io.insert-koin:koin-android:$koin_version")
             implementation("io.insert-koin:koin-androidx-compose:$koin_version")
             implementation( "io.insert-koin:koin-android-compat:$koin_version")
+           // implementation(project.dependencies.platform("androidx.compose:compose-bom:2024.06.00"))
 
         }
         commonMain.dependencies {
@@ -56,6 +59,7 @@ kotlin {
             implementation(compose.ui)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+            implementation(compose.uiTooling)
             implementation(projects.shared)
         }
     }
@@ -85,6 +89,13 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+    }
+
+    buildFeatures {
+        compose = true
+    }
+    composeOptions{
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

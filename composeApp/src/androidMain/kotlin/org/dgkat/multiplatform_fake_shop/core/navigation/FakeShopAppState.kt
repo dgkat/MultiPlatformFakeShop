@@ -18,29 +18,21 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun rememberFakeShopAppState(
-    //userNewsResourceRepository: UserNewsResourceRepository,
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
 ): FakeShopAppState {
    // NavigationTrackingSideEffect(navController)
     return remember(
-        navController,
-        coroutineScope,
-      //  userNewsResourceRepository,
+        navController
     ) {
         FakeShopAppState(
-            navController,
-            coroutineScope,
-           // userNewsResourceRepository,
+            navController
         )
     }
 }
 
 @Stable
 class FakeShopAppState(
-    val navController: NavHostController,
-    val coroutineScope: CoroutineScope,
-    //userNewsResourceRepository: UserNewsResourceRepository,
+    val navController: NavHostController
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -58,35 +50,11 @@ class FakeShopAppState(
         get() = true
 
 
-    /*val isOffline = networkMonitor.isOnline
-        .map(Boolean::not)
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
-        )*/
-
     /**
      * Map of top level destinations to be used in the TopBar, BottomBar and NavRail. The key is the
      * route.
      */
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
-
-    /**
-     * The top level destinations that have unread news resources.
-     */
-    /*val topLevelDestinationsWithUnreadResources: StateFlow<Set<TopLevelDestination>> =
-        userNewsResourceRepository.observeAllForFollowedTopics()
-            .combine(userNewsResourceRepository.observeAllBookmarked()) { forYouNewsResources, bookmarkedNewsResources ->
-                setOfNotNull(
-                    FOR_YOU.takeIf { forYouNewsResources.any { !it.hasBeenViewed } },
-                    BOOKMARKS.takeIf { bookmarkedNewsResources.any { !it.hasBeenViewed } },
-                )
-            }.stateIn(
-                coroutineScope,
-                SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptySet(),
-            )*/
 
     /**
      * UI logic for navigating to a top level destination in the app. Top level destinations have
@@ -124,22 +92,3 @@ class FakeShopAppState(
     // add searchs
     //fun navigateToSearch() = navController.navigateToSearch()
 }
-
-/**
- * Stores information about navigation events to be used with JankStats
- */
-/*
-@Composable
-private fun NavigationTrackingSideEffect(navController: NavHostController) {
-    TrackDisposableJank(navController) { metricsHolder ->
-        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-            metricsHolder.state?.putState("Navigation", destination.route.toString())
-        }
-
-        navController.addOnDestinationChangedListener(listener)
-
-        onDispose {
-            navController.removeOnDestinationChangedListener(listener)
-        }
-    }
-}*/

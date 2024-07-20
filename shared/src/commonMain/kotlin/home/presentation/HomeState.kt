@@ -1,6 +1,7 @@
 package home.presentation
 
+
 data class HomeState (
-    val data : String = "",
+    val homeRowStates : List<HomeRowState> = emptyList(),
     val loading : Boolean = true
 )
