@@ -4,14 +4,16 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     kotlin("plugin.serialization") version libs.versions.kotlin
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
-   /* @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-       browser()
-    }*/
-    
+    /* @OptIn(ExperimentalWasmDsl::class)
+     wasmJs {
+        browser()
+     }*/
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -19,7 +21,7 @@ kotlin {
             }
         }
     }
-    
+
     /*listOf(
         iosX64(),
         iosArm64(),
@@ -30,7 +32,7 @@ kotlin {
             isStatic = true
         }
     }*/
-    
+
     sourceSets {
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
@@ -44,6 +46,10 @@ kotlin {
 
             //Koin
             implementation("io.insert-koin:koin-core:3.5.3")
+
+            //Room
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
         }
         androidMain.dependencies {
             implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.1")
@@ -59,4 +65,12 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    ksp(libs.room.compiler)
 }
