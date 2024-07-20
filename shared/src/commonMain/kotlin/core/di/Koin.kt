@@ -1,10 +1,17 @@
 package core.di
 
+import core.data.mappers.RemoteToDomainProductMapper
+import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
 import core.data.repository.ProductRepositoryImpl
+import core.data.util.CustomHttpLogger
 import core.domain.repository.ProductRepository
-import core.util.CustomHttpLogger
+import home.domain.GetHomeProductsByTypeUseCase
+import home.domain.GetHomeProductsByTypeUseCaseMock
+import home.domain.GetHomeProductsByTypesUseCase
+import home.presentation.mappers.DomainToUiProductMapper
+import home.presentation.mappers.DomainToUiProductRatingMapper
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -34,7 +41,18 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 
     single<ProductClient> { ProductClientImpl(get()) }
-    single<ProductRepository> { ProductRepositoryImpl(get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get(), get()) }
+
+    factory { RemoteToDomainProductRatingMapper() }
+    factory { RemoteToDomainProductMapper(get()) }
+    factory { DomainToUiProductRatingMapper() }
+    factory { DomainToUiProductMapper(get()) }
+
+
+    factory { GetHomeProductsByTypeUseCase(get()) }
+    factory { GetHomeProductsByTypesUseCase(get()) }
+
+    factory { GetHomeProductsByTypeUseCaseMock(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

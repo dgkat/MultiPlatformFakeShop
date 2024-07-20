@@ -1,12 +1,13 @@
-package core.util
+package core.data.util
 
-import io.ktor.client.call.body
+import core.domain.util.RemoteError
+import core.domain.util.Resource
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.statement.HttpResponse
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.SerializationException
+import java.net.ConnectException
 
 /*
 suspend inline fun <reified T> HttpClient.safeRequest(
@@ -42,6 +43,50 @@ suspend inline fun <reified E> ResponseException.errorBody(): E? =
     } catch (e: SerializationException) {
         null
     }*/
+
+inline fun <reified T> safeRequest(
+    operation: () -> T
+): Resource<T> {
+    return try {
+        Resource.Success(operation())
+    } catch (e: ClientRequestException) {
+        Resource.Error(
+            errorType =
+            RemoteError.HttpError(
+                code = e.response.status.value
+            )
+        )
+    } catch (e: ServerResponseException) {
+        Resource.Error(
+            errorType =
+            RemoteError.ServerError(
+                code = e.response.status.value
+            )
+        )
+    } catch (e: IOException) {
+        Resource.Error(
+            errorType = RemoteError.NetworkError
+        )
+    } catch (e: SerializationException) {
+        Resource.Error(
+            errorType = RemoteError.SerializationError
+        )
+    } catch (e: ResponseException) {
+        Resource.Error(
+            errorType = RemoteError.ClientError(
+                code = e.response.status.value
+            )
+        )
+    } catch (e: ConnectException) {
+        Resource.Error(
+            errorType = RemoteError.ConnectionError
+        )
+    } catch (e: Exception) {
+        Resource.Error()
+    }
+}
+
+/*
 suspend inline fun <reified T> safeRequest(
     crossinline response: suspend () -> HttpResponse
 ): Resource<T> =
@@ -77,4 +122,4 @@ suspend inline fun <reified T> safeRequest(
         )
     } catch (e: Exception) {
         Resource.Error()
-    }
+    }*/

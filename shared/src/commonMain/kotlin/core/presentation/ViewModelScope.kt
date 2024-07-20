@@ -1,4 +1,4 @@
-package core.base
+package core.presentation
 
 import kotlinx.coroutines.CoroutineScope
 

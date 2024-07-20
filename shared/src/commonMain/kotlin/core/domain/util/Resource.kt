@@ -1,4 +1,4 @@
-package core.util
+package core.domain.util
 
 /*sealed class Resource<T>(val data: T?, val throwable: Throwable? = null) {
     class Success<T>(data: T): Resource<T>(data)
@@ -53,22 +53,27 @@ sealed class ErrorWrapper<T>(message: String? = null, data: T? = null) :
 3rd
 
  */
-sealed class Resource<T>(val data: T? = null, val message: String? = null) {
-    class Success<T>(data: T?) : Resource<T>(data)
-    class Error<T>(
-        data: T? = null,
-        message: String? = null,
-        errorType: FakeShopError = FakeShopError.UnknownError
-    ) : Resource<T>(data, message)
+sealed class Resource<T>() {
+    data class Success<T>(val data: T,val code: Int? = null) : Resource<T>()
+    data class Error<T>(
+        val data: T? = null,
+        val message: String? = null,
+        val errorType: CError = GenericError.UnknownError
+    ) : Resource<T>()
 }
 
-sealed class FakeShopError() {
-    data class HttpError(val code: Int) : FakeShopError()
-    data class ClientError(val code: Int) : FakeShopError()
-    data class ServerError(val code: Int) : FakeShopError()
-    data object NetworkError : FakeShopError()
-    data object SerializationError : FakeShopError()
-    data object UnknownError : FakeShopError()
+sealed interface CError
+sealed class RemoteError() : CError {
+    data class HttpError(val code: Int) : RemoteError()
+    data class ClientError(val code: Int) : RemoteError()
+    data class ServerError(val code: Int) : RemoteError()
+    data object NetworkError : RemoteError()
+    data object ConnectionError : RemoteError()
+    data object SerializationError : RemoteError()
+    data object UnknownError : RemoteError()
 }
 
+sealed class GenericError() : CError {
+    data object UnknownError : RemoteError()
+}
 

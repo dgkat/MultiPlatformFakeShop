@@ -8,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun FakeShopNavHost(
     appState: FakeShopAppState,
-    //onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     startDestination: String = HOME_SCREEN_ROUTE ,
 ) {

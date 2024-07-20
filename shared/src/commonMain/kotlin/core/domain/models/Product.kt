@@ -1,14 +1,17 @@
 package core.domain.models
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class Product (
+data class Product(
     val category: String,
     val description: String,
     val id: Int,
     val image: String,
     val price: Double,
-    val rating: Rating,
-    val title: String
+    val rating: ProductRating,
+    val title: String,
+    val productType: String
+)
+
+data class ProductRating(
+    val count: Int,
+    val rate: Double
 )
