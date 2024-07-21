@@ -16,7 +16,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 class HomeViewModel(
-    private val getHomeProductsByTypes: GetHomeProductsByTypesUseCase,
     private val domainToUiProductMapper: DomainToUiProductMapper
 ) : KMPViewModel(), KoinComponent {
 

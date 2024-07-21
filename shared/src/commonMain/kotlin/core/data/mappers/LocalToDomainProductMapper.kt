@@ -17,7 +17,9 @@ class LocalToDomainProductMapper(
             price = localProduct.price,
             rating = ratingMapper.map(localProduct.rating),
             title = localProduct.name,
-            productType = localProduct.productType
+            productType = localProduct.productType,
+            isFavorite = localProduct.isFavorite,
+            isRecentlyViewed = localProduct.isRecentlyViewed
         )
     }
 

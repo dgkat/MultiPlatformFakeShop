@@ -16,7 +16,7 @@ interface ProductsDao {
     suspend fun deleteProduct(product: LocalProduct)
 
     @Query("SELECT * FROM products")
-    suspend fun getAllProducts(): Flow<List<LocalProduct>>
+    fun getAllProducts(): Flow<List<LocalProduct>>
 
     @Query("SELECT id FROM products WHERE isFavorite = 1")
     fun getFavoriteProductIds(): Flow<List<Int>>

@@ -1,5 +1,9 @@
 package core.di
 
+import core.data.mappers.DomainToLocalProductMapper
+import core.data.mappers.DomainToLocalProductRatingMapper
+import core.data.mappers.LocalToDomainProductMapper
+import core.data.mappers.LocalToDomainProductRatingMapper
 import core.data.mappers.RemoteToDomainProductMapper
 import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
@@ -12,6 +16,8 @@ import home.domain.GetHomeProductsByTypeUseCaseMock
 import home.domain.GetHomeProductsByTypesUseCase
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.DomainToUiProductRatingMapper
+import home.presentation.mappers.UiToDomainProductMapper
+import home.presentation.mappers.UiToDomainProductRatingMapper
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -41,13 +47,22 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 
     single<ProductClient> { ProductClientImpl(get()) }
-    single<ProductRepository> { ProductRepositoryImpl(get(), get()) }
+    single<ProductRepository> { ProductRepositoryImpl(get(), get(), get(), get(), get()) }
 
     factory { RemoteToDomainProductRatingMapper() }
     factory { RemoteToDomainProductMapper(get()) }
+
+    factory { LocalToDomainProductRatingMapper() }
+    factory { LocalToDomainProductMapper(get()) }
+
+    factory { DomainToLocalProductRatingMapper() }
+    factory { DomainToLocalProductMapper(get()) }
+
     factory { DomainToUiProductRatingMapper() }
     factory { DomainToUiProductMapper(get()) }
 
+    factory { UiToDomainProductRatingMapper() }
+    factory { UiToDomainProductMapper(get()) }
 
     factory { GetHomeProductsByTypeUseCase(get()) }
     factory { GetHomeProductsByTypesUseCase(get()) }
