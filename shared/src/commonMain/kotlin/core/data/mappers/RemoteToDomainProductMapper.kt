@@ -1,11 +1,12 @@
 package core.data.mappers
 
 import core.data.remote.RemoteProduct
+import core.data.remote.RemoteProductRating
 import core.domain.models.Product
+import core.domain.models.ProductRating
 import home.presentation.mappers.DomainToUiProductRatingMapper
 
 class RemoteToDomainProductMapper(
-    //private val typeMapper: RemoteToDomainProductTypeMapper,
     private val ratingMapper: RemoteToDomainProductRatingMapper
 ) {
     fun map(remoteProduct: RemoteProduct): Product {
@@ -23,5 +24,14 @@ class RemoteToDomainProductMapper(
 
     fun map(remoteProducts: List<RemoteProduct>): List<Product> {
         return remoteProducts.map { this.map(it) }
+    }
+}
+
+class RemoteToDomainProductRatingMapper {
+    fun map(remoteProductRating: RemoteProductRating): ProductRating {
+        return ProductRating(
+            count = remoteProductRating.count,
+            rate = remoteProductRating.rate
+        )
     }
 }

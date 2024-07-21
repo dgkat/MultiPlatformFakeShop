@@ -12,7 +12,9 @@ data class UiHomeProduct (
     val price: Double,
     val rating: UiHomeProductRating,
     val title: String,
-    val productType : String
+    val productType : String,
+    val isFavorite: Boolean = false,
+    val isRecentlyViewed: Boolean = false
 )
 
 @Serializable

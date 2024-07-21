@@ -8,7 +8,9 @@ data class Product(
     val price: Double,
     val rating: ProductRating,
     val title: String,
-    val productType: String
+    val productType: String,
+    val isFavorite: Boolean = false,
+    val isRecentlyViewed: Boolean = false
 )
 
 data class ProductRating(
