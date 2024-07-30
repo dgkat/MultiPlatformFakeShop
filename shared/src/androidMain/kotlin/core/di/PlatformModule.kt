@@ -7,17 +7,19 @@ import core.data.local.ProductsDatabase
 import io.ktor.client.engine.android.Android
 import org.koin.dsl.module
 
-actual val platformModules = module {
-    includes(networkModule, databaseModule)
-}
+
 val networkModule = module {
     single { provideHttpClient() }
 }
+
 fun provideHttpClient() = Android.create()
 
 val databaseModule = module {
     single { provideProductsDatabase(get()) }
     single { get<ProductsDatabase>().productsDao() }
+}
+actual val platformModules = module {
+    includes(networkModule, databaseModule)
 }
 
 fun provideProductsDatabase(context: Context): ProductsDatabase {

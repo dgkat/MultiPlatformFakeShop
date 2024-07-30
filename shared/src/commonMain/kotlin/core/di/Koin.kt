@@ -8,12 +8,16 @@ import core.data.mappers.RemoteToDomainProductMapper
 import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
-import core.data.repository.ProductRepositoryImpl
 import core.data.util.CustomHttpLogger
-import core.domain.repository.ProductRepository
-import home.domain.GetHomeProductsByTypeUseCase
+import home.data.repository.HomeRepositoryImpl
+import home.domain.GetFavoriteProductIds
+import home.domain.GetFavoriteProductIdsImpl
+import home.domain.GetHomeProductsByType
+import home.domain.GetHomeProductsByTypeImpl
 import home.domain.GetHomeProductsByTypeUseCaseMock
-import home.domain.GetHomeProductsByTypesUseCase
+import home.domain.SaveProduct
+import home.domain.SaveProductImpl
+import home.domain.repository.HomeRepository
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.DomainToUiProductRatingMapper
 import home.presentation.mappers.UiToDomainProductMapper
@@ -47,8 +51,9 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     single { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 
     single<ProductClient> { ProductClientImpl(get()) }
-    single<ProductRepository> { ProductRepositoryImpl(get(), get(), get(), get(), get()) }
+    factory<HomeRepository> { HomeRepositoryImpl(get(), get(), get(), get(), get()) }
 
+    //Data mappers
     factory { RemoteToDomainProductRatingMapper() }
     factory { RemoteToDomainProductMapper(get()) }
 
@@ -58,15 +63,18 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     factory { DomainToLocalProductRatingMapper() }
     factory { DomainToLocalProductMapper(get()) }
 
+    //Pres mappers
     factory { DomainToUiProductRatingMapper() }
     factory { DomainToUiProductMapper(get()) }
 
     factory { UiToDomainProductRatingMapper() }
     factory { UiToDomainProductMapper(get()) }
 
-    factory { GetHomeProductsByTypeUseCase(get()) }
-    factory { GetHomeProductsByTypesUseCase(get()) }
-
+    //Domain
+    factory<GetHomeProductsByType> { GetHomeProductsByTypeImpl(get()) }
+    factory<GetFavoriteProductIds> { GetFavoriteProductIdsImpl(get()) }
+    factory<SaveProduct> { SaveProductImpl(get()) }
+    //MOCK
     factory { GetHomeProductsByTypeUseCaseMock(get()) }
 }
 

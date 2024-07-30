@@ -2,12 +2,12 @@ package productMain.presentation
 
 import core.presentation.KMPViewModel
 import core.presentation.coroutineScope
-import core.domain.repository.ProductRepository
+import home.domain.repository.HomeRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class  ProductMainViewModel : KMPViewModel(), KoinComponent {
-    private val repo: ProductRepository by inject()
+    private val repo: HomeRepository by inject()
     private val coroutineScope = viewModelScope.coroutineScope
 
    /* private val _state: MutableStateFlow<ProductMainState> = MutableStateFlow(

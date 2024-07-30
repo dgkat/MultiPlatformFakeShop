@@ -2,13 +2,16 @@ package home.presentation
 
 import core.domain.util.Resource
 import core.presentation.KMPViewModel
+import home.domain.GetFavoriteProductIds
 import home.domain.GetHomeProductsByTypeUseCaseMock
-import home.domain.GetHomeProductsByTypesUseCase
+import home.domain.SaveProduct
 import home.presentation.mappers.DomainToUiProductMapper
+import home.presentation.mappers.UiToDomainProductMapper
 import home.presentation.models.UiHomeProduct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -16,7 +19,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 class HomeViewModel(
-    private val domainToUiProductMapper: DomainToUiProductMapper
+    private val domainToUiProductMapper: DomainToUiProductMapper,
+    private val uiToDomainProductMapper: UiToDomainProductMapper,
+    private val saveProduct: SaveProduct
 ) : KMPViewModel(), KoinComponent {
 
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(
@@ -42,10 +47,13 @@ class HomeViewModel(
 
 
         // create a class that handles this (factory maybe?)( we can then inject the handler there)
+        //TODO gets bellow should be single for the lifecycle of the VM,
+        // inject in VM or scope to vm with koin
         categories.forEachIndexed { index, type ->
             val slice = HomeRowVMSlice(
                 getHomeProductsByTypeUseCase = get(),
                 domainToUiProductMapper = domainToUiProductMapper,
+                getFavoriteProductIds = get(),
                 type = type,
                 parentScope = a
             )
@@ -90,8 +98,15 @@ class HomeViewModel(
 
             is HomeEvent.OnRowEndReached -> {
                 println("row end reached ${event.type}")
-                a.launch {
+                /*a.launch {
                     homeRowVMSlices.find { it.state.value.type == event.type }?.invoke()
+                }*/
+            }
+
+            is HomeEvent.OnFavoriteClicked -> {
+                val favoriteProduct = event.product.copy(isFavorite = !event.product.isFavorite)
+                a.launch {
+                    saveProduct.saveProduct(uiToDomainProductMapper.map(favoriteProduct))
                 }
             }
         }
@@ -110,6 +125,7 @@ data class HomeRowState(
 class HomeRowVMSlice(
     private val getHomeProductsByTypeUseCase: GetHomeProductsByTypeUseCaseMock,
     private val domainToUiProductMapper: DomainToUiProductMapper,
+    getFavoriteProductIds: GetFavoriteProductIds,
     private val type: String,
     parentScope: CoroutineScope
 ) {
@@ -119,12 +135,21 @@ class HomeRowVMSlice(
             loading = true
         )
     )
-    val state = _state.stateIn(
+
+    val state = combine(
+        _state,
+        getFavoriteProductIds()
+    ) { state, favoriteIds ->
+        state.copy(
+            products = state.products.map { product ->
+                product.copy(isFavorite = favoriteIds.contains(product.id))
+            }
+        )
+    }.stateIn(
         scope = parentScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = HomeRowState()
     )
-
 
     suspend operator fun invoke() {
 
