@@ -11,12 +11,11 @@ class GetHomeProductsByTypeImpl(
     private val homeRepository: HomeRepository
 ) : GetHomeProductsByType {
     override suspend fun invoke(type: String, pageFrom: Int): Resource<List<Product>> {
-        //TODO maybe sort
         return homeRepository.getProductsByType(type)
     }
 }
 
-class GetHomeProductsByTypeUseCaseMock(
+class GetHomeProductsByTypeMock(
     private val mapper: RemoteToDomainProductMapper
 ) : GetHomeProductsByType {
     val types = listOf(
@@ -39,7 +38,7 @@ class GetHomeProductsByTypeUseCaseMock(
         val thousandMillis = 1000L
         val delayTime = if (type.length > 10) thousandMillis else type.length * thousandMillis
         delay(delayTime)
-        val products = getData(type, pageFrom)
+        val products = getData(type)
         return if (products.isEmpty()) {
             Resource.Error()
         } else if (products.size < 5) {
@@ -49,7 +48,7 @@ class GetHomeProductsByTypeUseCaseMock(
         }
     }
 
-    private fun getData(type: String, pageFrom: Int): List<Product> {
+    private fun getData(type: String): List<Product> {
         val products = map[type] ?: return emptyList()
         /*val to = if (pageFrom + 5 > products.size) products.size else pageFrom + 5
         return products.subList(pageFrom, to)*/

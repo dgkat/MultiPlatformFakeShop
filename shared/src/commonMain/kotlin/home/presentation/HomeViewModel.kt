@@ -3,7 +3,7 @@ package home.presentation
 import core.domain.util.Resource
 import core.presentation.KMPViewModel
 import home.domain.GetFavoriteProductIds
-import home.domain.GetHomeProductsByTypeUseCaseMock
+import home.domain.GetHomeProductsByType
 import home.domain.SaveProduct
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.UiToDomainProductMapper
@@ -51,7 +51,7 @@ class HomeViewModel(
         // inject in VM or scope to vm with koin
         categories.forEachIndexed { index, type ->
             val slice = HomeRowVMSlice(
-                getHomeProductsByTypeUseCase = get(),
+                getHomeProductsByType = get(),
                 domainToUiProductMapper = domainToUiProductMapper,
                 getFavoriteProductIds = get(),
                 type = type,
@@ -123,7 +123,7 @@ data class HomeRowState(
 )
 
 class HomeRowVMSlice(
-    private val getHomeProductsByTypeUseCase: GetHomeProductsByTypeUseCaseMock,
+    private val getHomeProductsByType: GetHomeProductsByType,
     private val domainToUiProductMapper: DomainToUiProductMapper,
     getFavoriteProductIds: GetFavoriteProductIds,
     private val type: String,
@@ -154,7 +154,7 @@ class HomeRowVMSlice(
     suspend operator fun invoke() {
 
         _state.update { it.copy(loading = true) }
-        when (val products = getHomeProductsByTypeUseCase(type, state.value.products.size)) {
+        when (val products = getHomeProductsByType(type, state.value.products.size)) {
             is Resource.Error -> {
                 _state.update {
                     it.copy(
