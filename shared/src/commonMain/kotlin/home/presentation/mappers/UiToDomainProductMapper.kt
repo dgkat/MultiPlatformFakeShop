@@ -5,11 +5,11 @@ import core.domain.models.ProductRating
 import home.presentation.models.UiHomeProduct
 import home.presentation.models.UiHomeProductRating
 
-class DomainToUiProductMapper(
-    private val ratingMapper: DomainToUiProductRatingMapper
+class UiToDomainProductMapper(
+    private val ratingMapper: UiToDomainProductRatingMapper
 ) {
-    fun map(product: Product): UiHomeProduct {
-        return UiHomeProduct(
+    fun map(product: UiHomeProduct): Product {
+        return Product(
             category = product.category,
             description = product.description,
             id = product.id,
@@ -23,14 +23,14 @@ class DomainToUiProductMapper(
         )
     }
 
-    fun map(products: List<Product>): List<UiHomeProduct> {
+    fun map(products: List<UiHomeProduct>): List<Product> {
         return products.map { this.map(it) }
     }
 }
 
-class DomainToUiProductRatingMapper {
-    fun map(productRating: ProductRating): UiHomeProductRating {
-        return UiHomeProductRating(
+class UiToDomainProductRatingMapper {
+    fun map(productRating: UiHomeProductRating): ProductRating {
+        return ProductRating(
             count = productRating.count,
             rate = productRating.rate
         )

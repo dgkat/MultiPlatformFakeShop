@@ -3,23 +3,22 @@ package home.domain
 import core.data.mappers.RemoteToDomainProductMapper
 import core.data.remote.RemoteProduct
 import core.domain.models.Product
-import core.domain.repository.ProductRepository
-import core.domain.util.RemoteError
+import home.domain.repository.HomeRepository
 import core.domain.util.Resource
 import kotlinx.coroutines.delay
 
-class GetHomeProductsByTypeUseCase(
-    private val productRepository: ProductRepository
-) {
-    suspend operator fun invoke(type: String): Resource<List<Product>> {
+class GetHomeProductsByTypeImpl(
+    private val homeRepository: HomeRepository
+) : GetHomeProductsByType {
+    override suspend fun invoke(type: String, pageFrom: Int): Resource<List<Product>> {
         //TODO maybe sort
-        return productRepository.getProductByType(type)
+        return homeRepository.getProductsByType(type)
     }
 }
 
 class GetHomeProductsByTypeUseCaseMock(
     private val mapper: RemoteToDomainProductMapper
-) {
+) : GetHomeProductsByType {
     val types = listOf(
         "phone",
         "laptop",
@@ -29,13 +28,14 @@ class GetHomeProductsByTypeUseCaseMock(
     )
 
     val map = mutableMapOf<String, List<Product>>()
+
     init {
         types.forEach {
             map[it] = fillData(it)
         }
     }
 
-    suspend operator fun invoke(type: String, pageFrom: Int): Resource<List<Product>> {
+    override suspend operator fun invoke(type: String, pageFrom: Int): Resource<List<Product>> {
         val thousandMillis = 1000L
         val delayTime = if (type.length > 10) thousandMillis else type.length * thousandMillis
         delay(delayTime)
@@ -49,10 +49,12 @@ class GetHomeProductsByTypeUseCaseMock(
         }
     }
 
-    private fun getData(type: String,pageFrom: Int): List<Product> {
-        val products = map[type] ?: emptyList()
-        val to = if (pageFrom + 5 > products.size) products.size else pageFrom + 5
-        return products.subList(pageFrom, to)
+    private fun getData(type: String, pageFrom: Int): List<Product> {
+        val products = map[type] ?: return emptyList()
+        /*val to = if (pageFrom + 5 > products.size) products.size else pageFrom + 5
+        return products.subList(pageFrom, to)*/
+
+        return products.subList(0, 4)
     }
 
     private fun fillData(type: String): List<Product> {
@@ -63,7 +65,7 @@ class GetHomeProductsByTypeUseCaseMock(
                 mapper.map(
                     (RemoteProduct(
                         category = type,
-                        id = count + it,
+                        id = (count.toString() + it.toString()).toInt(),
                         name = type + count + it,
                         price = count.toDouble(),
                         productType = type

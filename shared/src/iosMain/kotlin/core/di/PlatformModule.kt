@@ -1,32 +1,31 @@
 package core.di
 
-import android.content.Context
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import core.data.local.ProductsDatabase
-import io.ktor.client.engine.android.Android
-import org.koin.dsl.module
+import platform.Foundation.NSHomeDirectory
 
+actual fun platformModule() = module {
 
+}
+
+actual val platformModules = module {
+    includes(networkModule, databaseModule)
+}
 val networkModule = module {
     single { provideHttpClient() }
 }
-
-fun provideHttpClient() = Android.create()
+fun provideHttpClient() = //Android.create()
 
 val databaseModule = module {
     single { provideProductsDatabase(get()) }
     single { get<ProductsDatabase>().productsDao() }
 }
-actual val platformModules = module {
-    includes(networkModule, databaseModule)
-}
 
-fun provideProductsDatabase(context: Context): ProductsDatabase {
-    val dbFile = context.getDatabasePath("products.db")
+fun provideProductsDatabase(): ProductsDatabase {
+    val dbFile = NSHomeDirectory() + "/products.db"
     return Room.databaseBuilder<ProductsDatabase>(
-        context = context.applicationContext,
-        name = dbFile.absolutePath
+        name = dbFile,
+        factory = { ProductsDatabase::class.instantiateImpl() }
     )
         .setDriver(BundledSQLiteDriver())
         .build()

@@ -117,17 +117,27 @@ fun HomeProductRow(
             contentPadding = PaddingValues(4.dp)
         ) {
             items(items = rowState.products/*, key = { product -> product.id }*/) { product ->
-                HomeProductCard(product)
+                HomeProductCard(
+                    product = product,
+                    onEvent = onEvent
+                )
             }
         }
     }
 }
 
 @Composable
-fun HomeProductCard(product: UiHomeProduct) {
+fun HomeProductCard(
+    modifier: Modifier = Modifier,
+    product: UiHomeProduct,
+    onEvent: (HomeEvent) -> Unit
+) {
     Card(
         shape = RoundedCornerShape(size = 16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        modifier = modifier.clickable {
+            onEvent(HomeEvent.OnProductClicked(product.id))
+        }
     ) {
         Column(
             modifier = Modifier.size(width = 180.dp, height = 320.dp)
@@ -147,8 +157,8 @@ fun HomeProductCard(product: UiHomeProduct) {
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(8.dp),
-                    isFavorite = false,
-                    onClick = {}
+                    isFavorite = product.isFavorite,
+                    onClick = { onEvent(HomeEvent.OnFavoriteClicked(product)) }
                 )
             }
             Text(
@@ -326,5 +336,5 @@ private fun HomeProductCardPreview() {
         title = "title",
         productType = "type"
     )
-    HomeProductCard(product)
+    HomeProductCard(product = product, onEvent = { HomeEvent.OnProductClicked(1) })
 }
