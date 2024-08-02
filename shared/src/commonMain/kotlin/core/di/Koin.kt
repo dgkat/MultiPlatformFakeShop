@@ -1,5 +1,6 @@
 package core.di
 
+import IS_PROD
 import core.data.mappers.DomainToLocalProductMapper
 import core.data.mappers.DomainToLocalProductRatingMapper
 import core.data.mappers.LocalToDomainProductMapper
@@ -14,7 +15,7 @@ import home.domain.GetFavoriteProductIds
 import home.domain.GetFavoriteProductIdsImpl
 import home.domain.GetHomeProductsByType
 import home.domain.GetHomeProductsByTypeImpl
-import home.domain.GetHomeProductsByTypeUseCaseMock
+import home.domain.GetHomeProductsByTypeMock
 import home.domain.SaveProduct
 import home.domain.SaveProductImpl
 import home.domain.repository.HomeRepository
@@ -71,11 +72,15 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     factory { UiToDomainProductMapper(get()) }
 
     //Domain
-    factory<GetHomeProductsByType> { GetHomeProductsByTypeImpl(get()) }
+    factory<GetHomeProductsByType> {
+        if (IS_PROD) {
+            GetHomeProductsByTypeImpl(get())
+        } else {
+            GetHomeProductsByTypeMock(get())
+        }
+    }
     factory<GetFavoriteProductIds> { GetFavoriteProductIdsImpl(get()) }
     factory<SaveProduct> { SaveProductImpl(get()) }
-    //MOCK
-    factory { GetHomeProductsByTypeUseCaseMock(get()) }
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

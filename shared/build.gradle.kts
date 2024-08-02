@@ -74,3 +74,17 @@ room {
 dependencies {
     ksp(libs.room.compiler)
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    doLast {
+        println("Compiled classes:")
+        val files = destinationDirectory.get().asFile.walkTopDown().filter { it.isFile }
+        files.forEach { file ->
+            println(file)
+        }
+    }
+}
+
+tasks.named("assemble") {
+    dependsOn(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>())
+}

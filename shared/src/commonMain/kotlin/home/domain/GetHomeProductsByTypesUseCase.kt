@@ -5,8 +5,8 @@ import core.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetHomeProductsByTypesUseCase(
-    private val getHomeProductsByTypeUseCase: GetHomeProductsByTypeUseCaseMock
+/*class GetHomeProductsByTypesUseCase(
+    private val getHomeProductsByTypeUseCase: GetHomeProductsByType
 ) {
     suspend operator fun invoke(types: List<String>): Map<String, Flow<Resource<List<Product>>>> {
         val productsMap =
@@ -19,6 +19,6 @@ class GetHomeProductsByTypesUseCase(
             }
         return productsMap
     }
-}
+}*/
 
 
