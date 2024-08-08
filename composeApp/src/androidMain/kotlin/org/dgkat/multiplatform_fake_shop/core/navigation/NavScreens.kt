@@ -11,18 +11,17 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import home.presentation.HomeViewModel
+import org.dgkat.multiplatform_fake_shop.favorites.FavoritesScreen
 import org.dgkat.multiplatform_fake_shop.home.HomeScreen
 import org.dgkat.multiplatform_fake_shop.productMain.ProfileScreen
-import org.dgkat.multiplatform_fake_shop.productMain.SecondScreen
 import org.koin.androidx.compose.koinViewModel
-import productMain.presentation.ProductMainViewModel
 import java.net.URLDecoder
 import java.net.URLEncoder
 
 
 const val PROFILE_SCREEN_ROUTE = "profile_screen_route"
 const val HOME_SCREEN_ROUTE = "home_screen_route"
-const val SECOND_SCREEN_ROUTE = "second_screen_route"
+const val FAVORITES_SCREEN_ROUTE = "favorites_screen_route"
 
 //split them
 
@@ -40,15 +39,15 @@ fun NavGraphBuilder.homeScreen() {
     }
 }
 
-//Second screen
+//Favorites screen
 fun NavController.navigateToSecondScreen(navOptions: NavOptions) =
-    navigate(SECOND_SCREEN_ROUTE, navOptions)
+    navigate(FAVORITES_SCREEN_ROUTE, navOptions)
 
 fun NavGraphBuilder.secondScreen() {
     composable(
-        route = SECOND_SCREEN_ROUTE,
+        route = FAVORITES_SCREEN_ROUTE,
     ) {
-        SecondScreen()
+        FavoritesScreen()
     }
 }
 

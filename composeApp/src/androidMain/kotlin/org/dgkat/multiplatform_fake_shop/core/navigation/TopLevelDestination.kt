@@ -1,10 +1,10 @@
 package org.dgkat.multiplatform_fake_shop.core.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,11 +22,11 @@ enum class TopLevelDestination(
         iconTextId = R.string.home_name,
         titleTextId = R.string.home_name,
     ),
-    SECOND_SCREEN(
-        selectedIcon = Icons.Filled.Add,
-        unselectedIcon = Icons.Outlined.Add,
-        iconTextId = R.string.second_screen_name,
-        titleTextId = R.string.second_screen_name,
+    FAVORITES_SCREEN(
+        selectedIcon = Icons.Filled.Favorite,
+        unselectedIcon = Icons.Outlined.FavoriteBorder,
+        iconTextId = R.string.favorites_name,
+        titleTextId = R.string.favorites_name,
     ),
     PROFILE_SCREEN(
         selectedIcon = Icons.Filled.Person,

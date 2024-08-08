@@ -10,6 +10,9 @@ import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
 import core.data.util.CustomHttpLogger
+import favoritesrecents.domain.GetFavoriteProductsImpl
+import favoritesrecents.domain.GetFavoriteRecentProducts
+import favoritesrecents.domain.GetRecentlySeenProductsImpl
 import home.data.repository.HomeRepositoryImpl
 import home.domain.GetFavoriteProductIds
 import home.domain.GetFavoriteProductIdsImpl
@@ -34,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
@@ -81,6 +85,23 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     }
     factory<GetFavoriteProductIds> { GetFavoriteProductIdsImpl(get()) }
     factory<SaveProduct> { SaveProductImpl(get()) }
+
+
+    //FAVES
+    /*val appModule = module {
+        single<DataRepository>(named("local")) { LocalDataRepository() }
+        single<DataRepository>(named("remote")) { RemoteDataRepository() }
+    }
+
+    val viewModelModule = module {
+        viewModel { (type: String) ->
+            val repository: DataRepository = get(named(type))
+            MyViewModel(repository)
+        }
+    }*/
+/*
+    factory<GetFavoriteRecentProducts>(named("favorites")) { GetFavoriteProductsImpl() }
+    factory<GetFavoriteRecentProducts>(named("recently_seen")) { GetRecentlySeenProductsImpl() }*/
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

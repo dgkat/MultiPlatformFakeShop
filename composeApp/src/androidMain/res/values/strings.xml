@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">MultiPlatformFakeShop</string>
     <string name="home_name">Home</string>
-    <string name="second_screen_name">Second screen</string>
+    <string name="favorites_name">Favorites</string>
     <string name="profile_name">Profile</string>
+    <string name="recently_seen_name">Recently seen</string>
     <string name="top_nav_bar_icon_desc">top_nav_bar_icon_desc</string>
     <string name="top_nav_bar_action_icon_desc">top_nav_bar_action_icon_desc</string>
 </resources>
