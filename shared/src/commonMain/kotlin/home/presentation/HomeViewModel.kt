@@ -2,9 +2,9 @@ package home.presentation
 
 import core.domain.util.Resource
 import core.presentation.KMPViewModel
-import home.domain.GetFavoriteProductIds
-import home.domain.GetHomeProductsByType
-import home.domain.SaveProduct
+import home.domain.useCases.GetFavoriteProductIds
+import home.domain.useCases.GetHomeProductsByType
+import home.domain.useCases.SaveProduct
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.UiToDomainProductMapper
 import home.presentation.models.UiHomeProduct

@@ -1,4 +1,4 @@
-package favoritesrecents.presentation.models
+package favoritesrecents.sharedPresentation.models
 
 import kotlinx.serialization.Serializable
 

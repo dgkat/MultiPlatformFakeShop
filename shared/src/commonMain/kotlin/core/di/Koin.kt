@@ -10,17 +10,15 @@ import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
 import core.data.util.CustomHttpLogger
-import favoritesrecents.domain.GetFavoriteProductsImpl
-import favoritesrecents.domain.GetFavoriteRecentProducts
-import favoritesrecents.domain.GetRecentlySeenProductsImpl
+import favoritesrecents.di.favoritesRecentsModule
 import home.data.repository.HomeRepositoryImpl
-import home.domain.GetFavoriteProductIds
-import home.domain.GetFavoriteProductIdsImpl
-import home.domain.GetHomeProductsByType
-import home.domain.GetHomeProductsByTypeImpl
-import home.domain.GetHomeProductsByTypeMock
-import home.domain.SaveProduct
-import home.domain.SaveProductImpl
+import home.domain.useCases.GetFavoriteProductIds
+import home.domain.useCases.GetFavoriteProductIdsImpl
+import home.domain.useCases.GetHomeProductsByType
+import home.domain.useCases.GetHomeProductsByTypeImpl
+import home.domain.useCases.GetHomeProductsByTypeMock
+import home.domain.useCases.SaveProduct
+import home.domain.useCases.SaveProductImpl
 import home.domain.repository.HomeRepository
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.DomainToUiProductRatingMapper
@@ -37,14 +35,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
-import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(commonModule(enableNetworkLogs = enableNetworkLogs), platformModules)
+        modules(
+            commonModule(enableNetworkLogs = enableNetworkLogs),
+            platformModules,
+            favoritesRecentsModule()
+        )
     }
 
 fun initKoin() = initKoin(enableNetworkLogs = false) {}
@@ -99,9 +100,9 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
             MyViewModel(repository)
         }
     }*/
-/*
-    factory<GetFavoriteRecentProducts>(named("favorites")) { GetFavoriteProductsImpl() }
-    factory<GetFavoriteRecentProducts>(named("recently_seen")) { GetRecentlySeenProductsImpl() }*/
+    /*
+        factory<GetFavoriteRecentProducts>(named("favorites")) { GetFavoriteProductsImpl() }
+        factory<GetFavoriteRecentProducts>(named("recently_seen")) { GetRecentlySeenProductsImpl() }*/
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

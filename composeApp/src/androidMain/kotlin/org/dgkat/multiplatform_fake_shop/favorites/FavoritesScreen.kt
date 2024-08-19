@@ -20,10 +20,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import favoritesrecents.presentation.FavoritesRecentsViewModel
+import favoritesrecents.sharedPresentation.FavoritesRecentsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -80,13 +79,6 @@ fun FavoritesScreen(
                     RecentsScreenTab()
                 }
             }
-            /*Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = stringResource(id = FavoritesTabsEnum.entries[selectedTabIndex.value].textId))
-            }*/
-
         }
     }
 }
@@ -96,7 +88,7 @@ fun FavoritesScreenTab(
     viewModel: FavoritesRecentsViewModel = koinViewModel(named("favorites"))
 ) {
     val state by viewModel.favoritesRecentsState.collectAsStateWithLifecycle()
-    FavoritesTab(text = state.testSTR + " faves")
+    FavoritesRecentsTab(products = state.products,loading = state.loading)
 }
 
 @Composable
@@ -104,5 +96,5 @@ fun RecentsScreenTab(
     viewModel: FavoritesRecentsViewModel = koinViewModel(named("recently_seen"))
 ) {
     val state by viewModel.favoritesRecentsState.collectAsStateWithLifecycle()
-    FavoritesTab(text = state.testSTR+ " rec")
+    FavoritesRecentsTab(products = state.products,loading = state.loading)
 }

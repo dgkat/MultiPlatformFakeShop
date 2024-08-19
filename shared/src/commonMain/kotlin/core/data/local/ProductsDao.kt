@@ -23,4 +23,10 @@ interface ProductsDao {
 
     @Query("SELECT id FROM products WHERE isRecentlyViewed = 1")
     fun getRecentlyViewedProductIds(): Flow<List<Int>>
+
+    @Query("SELECT * FROM products WHERE isFavorite = 1")
+    fun getFavoriteProducts(): Flow<List<LocalProduct>>
+
+    @Query("SELECT * FROM products WHERE isRecentlyViewed = 1")
+    fun getRecentlySeenProducts(): Flow<List<LocalProduct>>
 }
