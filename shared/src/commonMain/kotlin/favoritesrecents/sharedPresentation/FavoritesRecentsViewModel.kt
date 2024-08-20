@@ -2,6 +2,7 @@ package favoritesrecents.sharedPresentation
 
 import core.presentation.KMPViewModel
 import favoritesrecents.sharedDomain.GetFavoriteRecentProducts
+import favoritesrecents.sharedDomain.UpdateFavoriteRecentProduct
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
@@ -11,7 +12,8 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 class FavoritesRecentsViewModel(
-    private val getFavoriteRecentProducts: GetFavoriteRecentProducts
+    private val getFavoriteRecentProducts: GetFavoriteRecentProducts,
+    private val updateFavoriteRecentProduct: UpdateFavoriteRecentProduct
 ) : KMPViewModel(), KoinComponent {
     private val _favoritesRecentsState: MutableStateFlow<FavoritesRecentsState> = MutableStateFlow(
         FavoritesRecentsState()
@@ -48,6 +50,19 @@ class FavoritesRecentsViewModel(
                         )
                     }
                 }
+        }
+    }
+
+    fun onEvent(event: FavoritesRecentsEvent) {
+        when (event) {
+            is FavoritesRecentsEvent.OnFavoriteClicked -> onFavoriteClicked(event.productId)
+            is FavoritesRecentsEvent.OnProductClicked -> TODO()
+        }
+    }
+
+    private fun onFavoriteClicked(productId: Int) {
+        a.launch {
+            updateFavoriteRecentProduct(productId)
         }
     }
 }

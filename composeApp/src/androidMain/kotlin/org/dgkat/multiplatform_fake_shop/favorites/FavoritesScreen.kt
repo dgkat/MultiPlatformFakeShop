@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.RemoveRedEye
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -22,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import favoritesrecents.sharedPresentation.FavoritesRecentsViewModel
 import kotlinx.coroutines.launch
+import org.dgkat.multiplatform_fake_shop.R
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 
@@ -72,7 +76,7 @@ fun FavoritesScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                   FavoritesScreenTab()
+                    FavoritesScreenTab()
                 }
 
                 1 -> {
@@ -87,8 +91,15 @@ fun FavoritesScreen(
 fun FavoritesScreenTab(
     viewModel: FavoritesRecentsViewModel = koinViewModel(named("favorites"))
 ) {
+
     val state by viewModel.favoritesRecentsState.collectAsStateWithLifecycle()
-    FavoritesRecentsTab(products = state.products,loading = state.loading)
+    FavoritesRecentsTab(
+        products = state.products,
+        loading = state.loading,
+        onEvent = viewModel::onEvent,
+        emptyText = "No Faves",
+        emptyImage = Icons.Outlined.FavoriteBorder,
+    )
 }
 
 @Composable
@@ -96,5 +107,11 @@ fun RecentsScreenTab(
     viewModel: FavoritesRecentsViewModel = koinViewModel(named("recently_seen"))
 ) {
     val state by viewModel.favoritesRecentsState.collectAsStateWithLifecycle()
-    FavoritesRecentsTab(products = state.products,loading = state.loading)
+    FavoritesRecentsTab(
+        products = state.products,
+        loading = state.loading,
+        onEvent = viewModel::onEvent,
+        emptyText = "No Recents",
+        emptyImage = Icons.Outlined.RemoveRedEye,
+    )
 }

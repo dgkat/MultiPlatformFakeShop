@@ -1,22 +1,30 @@
 package org.dgkat.multiplatform_fake_shop.favorites
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,9 +39,55 @@ import org.dgkat.multiplatform_fake_shop.home.FavoriteButton
 import org.dgkat.multiplatform_fake_shop.home.RatingRow
 
 @Composable
-fun FavoritesRecentsTab(modifier: Modifier = Modifier, products: List<Product>, loading: Boolean) {
-    Surface {
+fun FavoritesRecentsTab(
+    modifier: Modifier = Modifier, products: List<Product>,
+    loading: Boolean,
+    onEvent: (FavoritesRecentsEvent) -> Unit,
+    emptyText: String,
+    emptyImage: ImageVector
+) {
+    if (products.isEmpty()) {
+        FavoritesRecentsEmptyScreen(
+            emptyText = emptyText,
+            emptyImage = emptyImage
+        )
+    } else {
+        Surface {
+            LazyColumn(
+                modifier = modifier.fillMaxSize(),
+                state = rememberLazyListState(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(4.dp)
+            ) {
+                items(items = products) { product ->
+                    FavoritesRecentsProductRow(product = product, onEvent = onEvent)
+                }
+            }
+        }
+    }
+}
 
+@Composable
+fun FavoritesRecentsEmptyScreen(
+    modifier: Modifier = Modifier,
+    emptyText: String,
+    emptyImage: ImageVector
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = emptyImage,
+            contentDescription = null,
+            modifier = modifier,
+        )
+        Text(
+            modifier = Modifier.padding(all = 8.dp),
+            text = emptyText,
+            fontSize = 18.sp
+        )
     }
 }
 
@@ -55,7 +109,11 @@ fun FavoritesRecentsProductRow(
                 .fillMaxWidth()
                 .height(180.dp)
         ) {
-            Box(modifier = Modifier.padding(all = 4.dp).weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .weight(1f)
+            ) {
                 AsyncImage(
                     model = "https://i.postimg.cc/LsXBmP7n/test-laptop-1.jpg",
                     contentDescription = "coil_image",
