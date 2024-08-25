@@ -1,9 +1,11 @@
 package favoritesrecents.favorites.domain.useCases
 
+import favoritesrecents.favorites.domain.repository.FavoritesRepository
 import favoritesrecents.sharedDomain.UpdateFavoriteRecentProduct
 
-class UnfavoriteProductImpl() : UpdateFavoriteRecentProduct {
+class UnfavoriteProductImpl(private val favoritesRepository: FavoritesRepository) :
+    UpdateFavoriteRecentProduct {
     override suspend fun invoke(productId: Int) {
-        //TODO remove from faves and add to recently viewed
+        favoritesRepository.unfavoriteProduct(productId)
     }
 }

@@ -12,6 +12,9 @@ interface ProductsDao {
     @Upsert
     suspend fun upsertProduct(product: LocalProduct)
 
+    @Query("SELECT * FROM products WHERE id = :productId LIMIT 1")
+    suspend fun getProductById(productId: Int): LocalProduct?
+
     @Delete
     suspend fun deleteProduct(product: LocalProduct)
 
@@ -29,4 +32,10 @@ interface ProductsDao {
 
     @Query("SELECT * FROM products WHERE isRecentlyViewed = 1")
     fun getRecentlySeenProducts(): Flow<List<LocalProduct>>
+
+    @Query("UPDATE products SET isFavorite = 0 WHERE id = :productId")
+    suspend fun unfavoriteProduct(productId: Int)
+
+    @Query("UPDATE products SET isFavorite = 1 WHERE id = :productId")
+    suspend fun favoriteProduct(productId: Int)
 }

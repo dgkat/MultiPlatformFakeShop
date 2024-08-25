@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface RecentsRepository {
 
     fun getRecentlySeenProducts(): Flow<List<Product>>
+
+    suspend fun updateFavoriteStatus(productId: Int)
 }

@@ -136,7 +136,7 @@ fun HomeProductCard(
         shape = RoundedCornerShape(size = 16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = modifier.clickable {
-            onEvent(HomeEvent.OnProductClicked(product.id))
+            onEvent(HomeEvent.OnProductClicked(product))
         }
     ) {
         Column(
@@ -336,5 +336,5 @@ private fun HomeProductCardPreview() {
         title = "title",
         productType = "type"
     )
-    HomeProductCard(product = product, onEvent = { HomeEvent.OnProductClicked(1) })
+    HomeProductCard(product = product, onEvent = { HomeEvent.OnProductClicked(product) })
 }

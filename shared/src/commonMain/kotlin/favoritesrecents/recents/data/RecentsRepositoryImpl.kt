@@ -14,4 +14,15 @@ class RecentsRepositoryImpl(
     override fun getRecentlySeenProducts(): Flow<List<Product>> {
         return productDao.getRecentlySeenProducts().map { localToDomainProductMapper.map(it) }
     }
+
+    override suspend fun updateFavoriteStatus(productId: Int) {
+
+        val product = productDao.getProductById(productId) ?: return
+
+        if (product.isFavorite) {
+            productDao.unfavoriteProduct(productId)
+        } else {
+            productDao.favoriteProduct(productId)
+        }
+    }
 }

@@ -56,7 +56,7 @@ class FavoritesRecentsViewModel(
     fun onEvent(event: FavoritesRecentsEvent) {
         when (event) {
             is FavoritesRecentsEvent.OnFavoriteClicked -> onFavoriteClicked(event.productId)
-            is FavoritesRecentsEvent.OnProductClicked -> TODO()
+            is FavoritesRecentsEvent.OnProductClicked -> {/*navigate to PDP*/}
         }
     }
 

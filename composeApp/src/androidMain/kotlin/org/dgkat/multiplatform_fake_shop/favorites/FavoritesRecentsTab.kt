@@ -165,5 +165,5 @@ private fun HomeProductCardPreview() {
         title = "title",
         productType = "type"
     )
-    FavoritesRecentsProductRow(product = product, onEvent = { HomeEvent.OnProductClicked(1) })
+    FavoritesRecentsProductRow(product = product, onEvent = { FavoritesRecentsEvent.OnProductClicked(1) })
 }

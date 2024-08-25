@@ -89,7 +89,10 @@ class HomeViewModel(
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.OnProductClicked -> {
-
+                a.launch {
+                    val recentlySeenProduct = event.product.copy(isRecentlyViewed = true)
+                    saveProduct.saveProduct(uiToDomainProductMapper.map(recentlySeenProduct))
+                }
             }
 
             HomeEvent.OnColumnEndReached -> {

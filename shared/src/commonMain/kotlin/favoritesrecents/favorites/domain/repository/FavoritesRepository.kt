@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface FavoritesRepository {
 
     fun getFavoriteProducts(): Flow<List<Product>>
+
+    suspend fun unfavoriteProduct(productId: Int)
 }
