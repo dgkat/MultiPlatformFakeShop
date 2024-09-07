@@ -2,9 +2,9 @@ package home.presentation
 
 import core.domain.util.Resource
 import core.presentation.KMPViewModel
-import home.domain.GetFavoriteProductIds
-import home.domain.GetHomeProductsByType
-import home.domain.SaveProduct
+import home.domain.useCases.GetFavoriteProductIds
+import home.domain.useCases.GetHomeProductsByType
+import home.domain.useCases.SaveProduct
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.UiToDomainProductMapper
 import home.presentation.models.UiHomeProduct
@@ -89,7 +89,10 @@ class HomeViewModel(
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.OnProductClicked -> {
-
+                a.launch {
+                    val recentlySeenProduct = event.product.copy(isRecentlyViewed = true)
+                    saveProduct.saveProduct(uiToDomainProductMapper.map(recentlySeenProduct))
+                }
             }
 
             HomeEvent.OnColumnEndReached -> {

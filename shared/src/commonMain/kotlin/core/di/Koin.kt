@@ -10,14 +10,15 @@ import core.data.mappers.RemoteToDomainProductRatingMapper
 import core.data.remote.ProductClient
 import core.data.remote.ProductClientImpl
 import core.data.util.CustomHttpLogger
+import favoritesrecents.di.favoritesRecentsModule
 import home.data.repository.HomeRepositoryImpl
-import home.domain.GetFavoriteProductIds
-import home.domain.GetFavoriteProductIdsImpl
-import home.domain.GetHomeProductsByType
-import home.domain.GetHomeProductsByTypeImpl
-import home.domain.GetHomeProductsByTypeMock
-import home.domain.SaveProduct
-import home.domain.SaveProductImpl
+import home.domain.useCases.GetFavoriteProductIds
+import home.domain.useCases.GetFavoriteProductIdsImpl
+import home.domain.useCases.GetHomeProductsByType
+import home.domain.useCases.GetHomeProductsByTypeImpl
+import home.domain.useCases.GetHomeProductsByTypeMock
+import home.domain.useCases.SaveProduct
+import home.domain.useCases.SaveProductImpl
 import home.domain.repository.HomeRepository
 import home.presentation.mappers.DomainToUiProductMapper
 import home.presentation.mappers.DomainToUiProductRatingMapper
@@ -40,7 +41,11 @@ import org.koin.dsl.module
 fun initKoin(enableNetworkLogs: Boolean = false, appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(commonModule(enableNetworkLogs = enableNetworkLogs), platformModules)
+        modules(
+            commonModule(enableNetworkLogs = enableNetworkLogs),
+            platformModules,
+            favoritesRecentsModule()
+        )
     }
 
 fun initKoin() = initKoin(enableNetworkLogs = false) {}
@@ -81,6 +86,23 @@ fun commonModule(enableNetworkLogs: Boolean) = module {
     }
     factory<GetFavoriteProductIds> { GetFavoriteProductIdsImpl(get()) }
     factory<SaveProduct> { SaveProductImpl(get()) }
+
+
+    //FAVES
+    /*val appModule = module {
+        single<DataRepository>(named("local")) { LocalDataRepository() }
+        single<DataRepository>(named("remote")) { RemoteDataRepository() }
+    }
+
+    val viewModelModule = module {
+        viewModel { (type: String) ->
+            val repository: DataRepository = get(named(type))
+            MyViewModel(repository)
+        }
+    }*/
+    /*
+        factory<GetFavoriteRecentProducts>(named("favorites")) { GetFavoriteProductsImpl() }
+        factory<GetFavoriteRecentProducts>(named("recently_seen")) { GetRecentlySeenProductsImpl() }*/
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

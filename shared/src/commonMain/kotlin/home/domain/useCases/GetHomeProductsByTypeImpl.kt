@@ -1,4 +1,4 @@
-package home.domain
+package home.domain.useCases
 
 import core.data.mappers.RemoteToDomainProductMapper
 import core.data.remote.RemoteProduct

@@ -1,4 +1,4 @@
-package home.domain
+package home.domain.useCases
 
 import kotlinx.coroutines.flow.Flow
 

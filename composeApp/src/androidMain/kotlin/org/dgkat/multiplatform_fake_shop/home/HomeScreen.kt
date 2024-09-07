@@ -136,7 +136,7 @@ fun HomeProductCard(
         shape = RoundedCornerShape(size = 16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = modifier.clickable {
-            onEvent(HomeEvent.OnProductClicked(product.id))
+            onEvent(HomeEvent.OnProductClicked(product))
         }
     ) {
         Column(
@@ -166,7 +166,7 @@ fun HomeProductCard(
                 text = product.title,
                 fontSize = 14.sp
             )
-            RatingRow(productRating = product.rating)
+            RatingRow(ratingCount = product.rating.count, ratingRate = product.rating.rate)
             Text(
                 modifier = Modifier.padding(all = 8.dp),
                 text = "Price: " + product.price.toString() + " $",
@@ -206,16 +206,16 @@ fun FavoriteButton(modifier: Modifier = Modifier, isFavorite: Boolean, onClick: 
 }
 
 @Composable
-fun RatingRow(modifier: Modifier = Modifier, productRating: UiHomeProductRating) {
+fun RatingRow(modifier: Modifier = Modifier,ratingCount: Int, ratingRate: Double) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        StarRatingBar(rating = productRating.rate, modifier = Modifier.padding(start = 8.dp))
+        StarRatingBar(rating = ratingRate, modifier = Modifier.padding(start = 8.dp))
         Text(
             modifier = modifier,
-            text = "${productRating.rate} (${productRating.count})",
+            text = "$ratingRate $ratingCount",
             fontSize = 12.sp
         )
     }
@@ -336,5 +336,5 @@ private fun HomeProductCardPreview() {
         title = "title",
         productType = "type"
     )
-    HomeProductCard(product = product, onEvent = { HomeEvent.OnProductClicked(1) })
+    HomeProductCard(product = product, onEvent = { HomeEvent.OnProductClicked(product) })
 }

@@ -1,4 +1,4 @@
-package home.domain
+package home.domain.useCases
 
 import core.domain.models.Product
 import home.domain.repository.HomeRepository

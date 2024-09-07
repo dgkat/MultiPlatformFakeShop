@@ -3,18 +3,12 @@ package org.dgkat.multiplatform_fake_shop.core.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun rememberFakeShopAppState(
@@ -41,7 +35,7 @@ class FakeShopAppState(
     val currentTopLevelDestination: TopLevelDestination?
         @Composable get() = when (currentDestination?.route) {
             HOME_SCREEN_ROUTE -> TopLevelDestination.HOME_SCREEN
-            SECOND_SCREEN_ROUTE -> TopLevelDestination.SECOND_SCREEN
+            FAVORITES_SCREEN_ROUTE -> TopLevelDestination.FAVORITES_SCREEN
             PROFILE_SCREEN_ROUTE -> TopLevelDestination.PROFILE_SCREEN
             else -> null
         }
@@ -84,7 +78,7 @@ class FakeShopAppState(
 
             when (topLevelDestination) {
                 TopLevelDestination.HOME_SCREEN -> navController.navigateToHome(topLevelNavOptions)
-                TopLevelDestination.SECOND_SCREEN -> navController.navigateToSecondScreen(topLevelNavOptions)
+                TopLevelDestination.FAVORITES_SCREEN -> navController.navigateToSecondScreen(topLevelNavOptions)
                 TopLevelDestination.PROFILE_SCREEN -> navController.navigateToProfile(topLevelNavOptions)
             }
 
