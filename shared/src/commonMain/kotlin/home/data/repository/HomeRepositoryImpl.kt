@@ -1,6 +1,7 @@
 package home.data.repository
 
 import core.data.local.ProductsDao
+import core.data.local.ScheduleProductsSyncWork
 import core.data.mappers.DomainToLocalProductMapper
 import core.data.mappers.LocalToDomainProductMapper
 import core.data.mappers.RemoteToDomainProductMapper
@@ -17,9 +18,14 @@ class HomeRepositoryImpl(
     private val remoteToDomainProductMapper: RemoteToDomainProductMapper,
     private val productDao: ProductsDao,
     private val localToDomainProductMapper: LocalToDomainProductMapper,
-    private val domainToLocalProductMapper: DomainToLocalProductMapper
+    private val domainToLocalProductMapper: DomainToLocalProductMapper,
+    private val scheduleProductsSyncWork: ScheduleProductsSyncWork
 ) : KoinComponent,
     HomeRepository {
+
+        init {
+            scheduleProductsSyncWork.invoke()
+        }
 
     override suspend fun getProductById(): Resource<Product> {
         val response = productClient.getProductById()

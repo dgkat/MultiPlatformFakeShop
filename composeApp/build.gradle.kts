@@ -9,17 +9,17 @@ plugins {
 }
 
 kotlin {
-   /* @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
-        binaries.executable()
-    }*/
-    
+    /* @OptIn(ExperimentalWasmDsl::class)
+     wasmJs {
+         moduleName = "composeApp"
+         browser {
+             commonWebpackConfig {
+                 outputFileName = "composeApp.js"
+             }
+         }
+         binaries.executable()
+     }*/
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -27,9 +27,9 @@ kotlin {
             }
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -48,9 +48,12 @@ kotlin {
             val koin_version = "3.5.3"
             implementation("io.insert-koin:koin-android:$koin_version")
             implementation("io.insert-koin:koin-androidx-compose:$koin_version")
-            implementation( "io.insert-koin:koin-android-compat:$koin_version")
-           // implementation(project.dependencies.platform("androidx.compose:compose-bom:2024.06.00"))
+            implementation("io.insert-koin:koin-android-compat:$koin_version")
+            // implementation(project.dependencies.platform("androidx.compose:compose-bom:2024.06.00"))
 
+            // WorkManager dependency
+            val work_version = "2.8.0"
+            implementation ("androidx.work:work-runtime-ktx:$work_version")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -109,7 +112,7 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions{
+    composeOptions {
         kotlinCompilerExtensionVersion = "1.5.7"
     }
     compileOptions {
