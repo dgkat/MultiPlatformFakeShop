@@ -35,8 +35,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.material3.android)
 
-            implementation("androidx.navigation:navigation-compose:2.7.6")
-            implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
             //implementation(libs.androidx.runtime.tracing)
 
             implementation(libs.compose.foundation)
@@ -45,10 +45,9 @@ kotlin {
             //compose-coil = { module = "io.coil-kt:coil-compose:2.6.0", version.ref = "compose" }
             implementation(libs.coil.compose)
             // Koin for Android
-            val koin_version = "3.5.3"
-            implementation("io.insert-koin:koin-android:$koin_version")
-            implementation("io.insert-koin:koin-androidx-compose:$koin_version")
-            implementation( "io.insert-koin:koin-android-compat:$koin_version")
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            implementation( libs.koin.android.compat)
            // implementation(project.dependencies.platform("androidx.compose:compose-bom:2024.06.00"))
 
         }

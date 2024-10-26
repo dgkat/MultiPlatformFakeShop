@@ -1,4 +1,4 @@
-package org.dgkat.multiplatform_fake_shop.productMain
+package org.dgkat.multiplatform_fake_shop.profile
 
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text

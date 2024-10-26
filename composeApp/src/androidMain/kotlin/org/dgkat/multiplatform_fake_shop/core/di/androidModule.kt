@@ -5,7 +5,7 @@ import home.presentation.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import productMain.presentation.ProductMainViewModel
+import productDetail.presentation.ProductMainViewModel
 
 fun androidModule() = module {
     //TODO split modules
