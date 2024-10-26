@@ -13,7 +13,7 @@ import androidx.navigation.navArgument
 import home.presentation.HomeViewModel
 import org.dgkat.multiplatform_fake_shop.favorites.FavoritesScreen
 import org.dgkat.multiplatform_fake_shop.home.HomeScreen
-import org.dgkat.multiplatform_fake_shop.productMain.ProfileScreen
+import org.dgkat.multiplatform_fake_shop.profile.ProfileScreen
 import org.koin.androidx.compose.koinViewModel
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -93,3 +93,7 @@ fun NavGraphBuilder.topicScreen(
        // TopicRoute(onBackClick = onBackClick, onTopicClick = onTopicClick)
     }
 }
+
+
+//v2 with type safe navigation
+

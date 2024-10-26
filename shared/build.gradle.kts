@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -9,10 +8,6 @@ plugins {
 }
 
 kotlin {
-    /* @OptIn(ExperimentalWasmDsl::class)
-     wasmJs {
-        browser()
-     }*/
 
     androidTarget {
         compilations.all {
@@ -35,7 +30,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
             //Ktor
